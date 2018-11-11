@@ -267,26 +267,26 @@ FabricClientRest工程中包括clientRest模块和sdkInterface模块，FabricCli
 步骤5：下载JDK8，访问地址：http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html，下载jdk-8u191-linux-x64.tar.gz文件，界面如下所示：
  
 步骤6：拷贝jdk-8u191-linux-x64.tar.gz文件到/usr/local/目录下，执行解压命令。
-# cd /usr/local/
-# tar zxvf jdk-8u191-linux-x64.tar.gz
+\# cd /usr/local/
+\# tar zxvf jdk-8u191-linux-x64.tar.gz
 步骤7：设置环境变量
-# vi /etc/profile
+\# vi /etc/profile
 添加如下内容
 export JAVA_HOME=/usr/local/jdk1.8.0_191
 export CLASSPATH=.:$JAVA_HOME/lib/dt.jar:$JAVA_HOME/lib/tools.jar
 export PATH=$PATH:$JAVA_HOME/bin
 步骤8：环境变量设置立即生效
-# source /etc/profile
+\# source /etc/profile
 步骤9：查看JDK版本
-# java -version
+\# java -version
 4.3 生产环境部署
 步骤9：根据第十一章 Fabric kafka生产环境部署启动Fabric网络，kafka运行验证由java-sdk客户端处理。
 步骤10：运行clientrest的spring boot系统。
-# cd /usr/local/clientrest
-# netstat -lanp|grep 8080
-# kill -9 XXXX
-# nohup java -jar clientrest-1.0-SNAPSHOT.jar >springboot.log 2>&1 &
-#  tail -f springboot.log
+\# cd /usr/local/clientrest
+\# netstat -lanp|grep 8080
+\# kill -9 XXXX
+\# nohup java -jar clientrest-1.0-SNAPSHOT.jar >springboot.log 2>&1 &
+\#  tail -f springboot.log
 步骤11：拷贝整个crypto-config目录和Fabric-sdk-soapui-project.xml到/usr/local/clientrest目录中。
 步骤12：验证是否正常运行，通过浏览器访问http://192.168.235.7：8080，出现如下界面表示系统已正确部署。
  
