@@ -132,8 +132,7 @@ Java-SDK直接调用对于初学者有很大的难度，为了最方便外部应
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤12.jpg"/ alt="编码环境搭建步骤12">
 </div>
 
-##### 步骤13：
-选择“web->web”,点击“Nest”，界面如下所示：
+##### 步骤13：选择“web->web”,点击“Nest”，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤13.jpg"/ alt="编码环境搭建步骤13">
 </div>
