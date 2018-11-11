@@ -168,7 +168,7 @@ sdkinterface模块实现官方fabric-sdk-java接口的优化，让使用者更�
 3.4	REST接口说明
 第三方系统调用的REST接口分为智能合约接口和区块信息接口。
 1) 智能合约接口：智能合约接口有安装智能合约、实例化智能合约、升级智能合约、执行智能合约、查询智能合约。
-	安装智能合约
+* 安装智能合约
 接口调用请求说明
 http请求方式	POST
 http请求地址	http://{域名}/chaincode/install
@@ -180,7 +180,7 @@ http请求地址	http://{域名}/chaincode/install
 
 参数	说明
 	
-	实例化智能合约
+* 实例化智能合约
 接口调用请求说明
 http请求方式	POST
 http请求地址	http://{域名}/chaincode/instantiate
@@ -193,7 +193,7 @@ post格式：{"array":["a","200","b","400"]}
 
 参数	说明
 	
-	升级智能合约
+* 升级智能合约
 接口调用请求说明
 http请求方式	POST
 http请求地址	http://{域名}/chaincode/upgrade
@@ -206,7 +206,7 @@ post格式：{"array":["a","200","b","400"]}
 
 参数	说明
 	
-	执行智能合约
+* 执行智能合约
 接口调用请求说明
 http请求方式	POST
 http请求地址	http://{域名}/chaincode/invoke
@@ -220,7 +220,7 @@ post格式：{"fcn":"invoke","array":["b", "a", "5"]}
 
 参数	说明
 	
-	查询智能合约
+* 查询智能合约
 接口调用请求说明
 http请求方式	POST
 http请求地址	http://{域名}/chaincode/query
@@ -235,7 +235,7 @@ post格式：{"fcn":"invoke","array":["a"]}
 参数	说明
 	
 2) 区块信息接口：区块信息接口有根据交易Id查询区块数据、根据哈希值查询区块数据、根据区块高度查询区块数据、查询当前区块信息。
-	根据交易Id查询区块数据：
+* 根据交易Id查询区块数据：
 接口调用请求说明
 http请求方式	POST
 http请求地址	http://{域名}/chainblock/queryBlockByTransactionID
@@ -248,7 +248,7 @@ post格式：{"txId":"f30522c5db02341fa06cb0c1d662b2184d75eba1df7327af8c6327f1a1
 
 参数	说明
 	
-	根据哈希值查询区块数据：
+* 根据哈希值查询区块数据：
 接口调用请求说明
 http请求方式	POST
 http请求地址	http://{域名}/chainblock/queryBlockByHash
@@ -261,7 +261,7 @@ post格式：{"hash":"ff0ceb01a804e98fae405ea075748fa149899e85bc0f03f939c9b6e7f6
 
 参数	说明
 	
-	根据区块高度查询区块数据：
+* 根据区块高度查询区块数据：
 接口调用请求说明
 http请求方式	POST
 http请求地址	http://{域名}/chainblock/queryBlockByNumber
@@ -274,7 +274,7 @@ post格式：{"blockNumber":"1"}
 
 参数	说明
 	
-	查询当前区块信息：
+* 查询当前区块信息：
 接口调用请求说明
 http请求方式	POST
 http请求地址	http://{域名}/chainblock/queryBlockchainInfo
