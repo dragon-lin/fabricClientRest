@@ -659,7 +659,7 @@ export PATH=$PATH:$JAVA_HOME/bin
 
 **步骤12：** 拷贝整个crypto-config目录和Fabric-sdk-soapui-project.xml到/usr/local/clientrest目录中。
 
-**步骤13：** 验证是否正常运行，通过浏览器访问http://192.168.235.7：8080，出现如下界面表示系统已正确部署。
+**步骤13：** 验证是否正常运行，通过浏览器访问http://192.168.235.7：8080 ，出现如下界面表示系统已正确部署。
  
 **步骤14：** 安装SoapUI测试工具（在光盘中有安装软件），安装完后运行的界面如下：
 <div align=center>
@@ -678,7 +678,7 @@ export PATH=$PATH:$JAVA_HOME/bin
 </div>
 
 #### 1) 安装链码
-打开安装链码测试项，以POST请求方式调用http://192.168.235.7:8080/chaincode/install接口，如果调用成功，以json方式返回结果，返回字符串及界面如下所示：
+打开安装链码测试项，以POST请求方式调用http://192.168.235.7:8080/chaincode/install 接口，如果调用成功，以json方式返回结果，返回字符串及界面如下所示：
 调用返回：
 {
    "result": "OK",
@@ -691,7 +691,7 @@ export PATH=$PATH:$JAVA_HOME/bin
 </div>
 
 #### 2) 实例化链码
-打开安装链码测试项，以POST请求方式调用http://192.168.235.7:8080/chaincode/instantiate接口，如果调用成功，以json方式返回结果，请求参数、返回字符串及界面如下所示：
+打开安装链码测试项，以POST请求方式调用http://192.168.235.7:8080/chaincode/instantiate 接口，如果调用成功，以json方式返回结果，请求参数、返回字符串及界面如下所示：
 请求参数：
 {"array":["a","200","b","400"]}
 返回字符串：
@@ -706,7 +706,7 @@ export PATH=$PATH:$JAVA_HOME/bin
 </div>
 
 #### 3) 执行链码
-打开安装链码测试项，以POST请求方式调用http://192.168.235.7:8080/chaincode/invoke接口，如果调用成功，以json方式返回结果，请求参数、返回字符串及界面如下所示：
+打开安装链码测试项，以POST请求方式调用http://192.168.235.7:8080/chaincode/invoke 接口，如果调用成功，以json方式返回结果，请求参数、返回字符串及界面如下所示：
 
 界面：
 <div align=center>
@@ -714,7 +714,7 @@ export PATH=$PATH:$JAVA_HOME/bin
 </div>
 
 #### 4) 查询链码
-打开安装链码测试项，以POST请求方式调用http://192.168.235.7:8080/chaincode/query接口，如果调用成功，以json方式返回结果，请求参数、返回字符串及界面如下所示：
+打开安装链码测试项，以POST请求方式调用http://192.168.235.7:8080/chaincode/query 接口，如果调用成功，以json方式返回结果，请求参数、返回字符串及界面如下所示：
 
 界面：
 <div align=center>
@@ -722,7 +722,7 @@ export PATH=$PATH:$JAVA_HOME/bin
 </div>
 
 #### 5) 查询当前区块
-打开安装链码测试项，以POST请求方式调用http://192.168.235.7:8080/chainblock/ queryBlockchainInfo接口，如果调用成功，以json方式返回结果，返回字符串及界面如下所示：
+打开安装链码测试项，以POST请求方式调用http://192.168.235.7:8080/chainblock/queryBlockchainInfo 接口，如果调用成功，以json方式返回结果，返回字符串及界面如下所示：
 
 界面：
 <div align=center>
@@ -730,7 +730,7 @@ export PATH=$PATH:$JAVA_HOME/bin
 </div>
 
 #### 6) 根据高度查询区块
-打开安装链码测试项，以POST请求方式调用http://192.168.235.7:8080/chainblock/ queryBlockByNumber接口，如果调用成功，以json方式返回结果，请求参数、返回字符串及界面如下所示：
+打开安装链码测试项，以POST请求方式调用http://192.168.235.7:8080/chainblock/queryBlockByNumber 接口，如果调用成功，以json方式返回结果，请求参数、返回字符串及界面如下所示：
 
 界面：
 <div align=center>
@@ -738,7 +738,7 @@ export PATH=$PATH:$JAVA_HOME/bin
 </div>
 
 #### 7) 根据交易ID查询区块
-打开安装链码测试项，以POST请求方式调用http://192.168.235.7:8080/chainblock/queryBlockByTransactionID接口，如果调用成功，以json方式返回结果，请求参数、返回字符串及界面如下所示：
+打开安装链码测试项，以POST请求方式调用http://192.168.235.7:8080/chainblock/queryBlockByTransactionID 接口，如果调用成功，以json方式返回结果，请求参数、返回字符串及界面如下所示：
 
 界面：
 <div align=center>
@@ -746,7 +746,7 @@ export PATH=$PATH:$JAVA_HOME/bin
 </div>
 
 #### 8) 根据HASH查询区块
-打开安装链码测试项，以POST请求方式调用http://192.168.235.7:8080/chainblock/queryBlockByHash接口，如果调用成功，以json方式返回结果，请求参数、返回字符串及界面如下所示：
+打开安装链码测试项，以POST请求方式调用http://192.168.235.7:8080/chainblock/queryBlockByHash 接口，如果调用成功，以json方式返回结果，请求参数、返回字符串及界面如下所示：
 
 界面：
 <div align=center>
