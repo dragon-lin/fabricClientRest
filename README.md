@@ -1,9 +1,9 @@
-#Fabric Client Rest [![llong](https://img.shields.io/badge/made%20by-%E7%81%B5%E9%BE%99-brightgreen.svg)](http://www.cnblogs.com/aberic/)
+# Fabric Client Rest [![llong](https://img.shields.io/badge/made%20by-%E7%81%B5%E9%BE%99-brightgreen.svg)](http://www.cnblogs.com/aberic/)
 
-##1.Java-SDK简介
+## 1.Java-SDK简介
 Java-SDK是外部应用程序与Hyperledger Fabric的交互通道，帮助Java应用程序更好的管理Fabric通道和链码的生命周期，提供了链码管理、查询通道上的区块和交易数据的接口，及通道发生事件的监控。
 <br>
-##2.Java-SDK代码分析
+## 2.Java-SDK代码分析
 官方的fabric-sdk-java下载地址为https://github.com/hyperledger/fabric-sdk-java ，目前版本为Java SDK for Hyperledger Fabric 1.3，下载源码后，使用IntelliJ IDEA导入工程，显示结构如下：
 <div align=center>
    <img width="300" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/fabric-sdk-java源码.jpg"/ alt="fabric-sdk-java源码">
@@ -21,7 +21,7 @@ Java-SDK是外部应用程序与Hyperledger Fabric的交互通道，帮助Java�
         </dependency>
 </dependencies>
 外部应用程序访问区块链是通过实例化HFClient类，调用类中的接口。访问Fabric ca是通过实例化HFCAClient类，调用类中的接口。
-###2.1 fabric.sdk主要类关系图
+### 2.1 fabric.sdk主要类关系图
 类图如下：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/fabric主要类关系.jpg"/ alt="fabric主要类关系">
