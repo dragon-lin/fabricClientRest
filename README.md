@@ -208,16 +208,16 @@ sdkinterface模块实现官方fabric-sdk-java接口的优化，让使用者更�
 
 接口调用请求说明
 
->    http请求方式： POST
-    http请求地址：http://{域名}/chaincode/install
-    参数：-
-    返回：
-    <![endif]-->
-    {
-    "result": "OK",
-    "txid": "",
-    "status": 200
-    } 
+>   http请求方式： POST </br>
+    http请求地址：http://{域名}/chaincode/install</br>
+    参数：-</br>
+    返回：</br>
+    <![endif]--></br>
+    {</br>
+    "result": "OK",</br>
+    "txid": "",</br>
+    "status": 200</br>
+    } </br>
 
 * 实例化智能合约
 接口调用请求说明
