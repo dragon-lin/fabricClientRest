@@ -50,7 +50,8 @@ register	register是注册用户身份方法。
 enroll	enroll是登记用户身份方法。
 reenroll	reenroll是重新登记用户身份方法。
 revoke	revoke是注销已签发的用户证书方法。
-##3 Java-SDK优化
+
+## 3 Java-SDK优化
 Java-SDK直接调用对于初学者有很大的难度，为了最方便外部应用程序的调用，本节在官方Java-SDK的基础上进行优化和封装，提供简洁的、跨开发语言的调用方式。
 
 ### 3.1	编码思路
@@ -61,7 +62,9 @@ Java-SDK直接调用对于初学者有很大的难度，为了最方便外部应
 
 ### 3.2	编码环境搭建
 1) 创建工程
+
 步骤1：
+
 运行IntelliJ IDEA工具，点击File->New->Project...，新建工程，在New Project界面中选择“Maven”后，点击“Next”，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤1.jpg"/ alt="编码环境搭建步骤1">
