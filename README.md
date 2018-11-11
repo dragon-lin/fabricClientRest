@@ -208,7 +208,7 @@ sdkinterface模块实现官方fabric-sdk-java接口的优化，让使用者更�
 
 接口调用请求说明
 
->   http请求方式： POST </br>
+>    http请求方式： POST </br>
     http请求地址：http://{域名}/chaincode/install</br>
     参数：-</br>
     返回：</br>
@@ -220,72 +220,160 @@ sdkinterface模块实现官方fabric-sdk-java接口的优化，让使用者更�
     } </br>
 
 * 实例化智能合约
-接口调用请求说明
-http请求方式	POST
-http请求地址	http://{域名}/chaincode/instantiate
-参数说明
-参数	是否必须	说明
-array	是	["a","200","b","400"]表示：a初始值200，b初始值400
-post格式：{"array":["a","200","b","400"]}
-返回说明
-正常情况下，返回下述JSON数据包：
 
-参数	说明
-	
+>    http请求方式： POST </br>
+    http请求地址：http://{域名}/chaincode/instantiate</br>
+    参数：{"array":["a","200","b","400"]}</br>
+    返回：</br>
+    <![endif]--></br>
+    {</br>
+    "result": "OK",</br>
+    "txid": "",</br>
+    "status": 200</br>
+    } </br>
+    
 * 升级智能合约
-接口调用请求说明
-http请求方式	POST
-http请求地址	http://{域名}/chaincode/upgrade
-参数说明
-参数	是否必须	说明
-array	是	["a","200","b","400"]表示：a初始值200，b初始值400
-post格式：{"array":["a","200","b","400"]}
-返回说明
-正常情况下，返回下述JSON数据包：
 
-参数	说明
+>    http请求方式： POST </br>
+    http请求地址：http://{域名}/chaincode/upgrade</br>
+    参数：{"array":["a","200","b","400"]}</br>
+    返回：</br>
+    <![endif]--></br>
+    {</br>
+    "result": "OK",</br>
+    "txid": "",</br>
+    "status": 200</br>
+    } </br>
 	
 * 执行智能合约
-接口调用请求说明
-http请求方式	POST
-http请求地址	http://{域名}/chaincode/invoke
-参数说明
-参数	是否必须	说明
-fcn	是	函数名
-array	是	["b", "a", "5"]表示：b向a转移值5
-post格式：{"fcn":"invoke","array":["b", "a", "5"]}
-返回说明
-正常情况下，返回下述JSON数据包：
 
-参数	说明
+>    http请求方式： POST </br>
+    http请求地址：http://{域名}/chaincode/invoke</br>
+    参数：{"fcn":"invoke","array":["b", "a", "5"]}</br>
+    返回：</br>
+    <![endif]--></br>
+    {</br>
+    "result": "OK",</br>
+    "txid": "",</br>
+    "status": 200</br>
+    } </br>
 	
 * 查询智能合约
-接口调用请求说明
-http请求方式	POST
-http请求地址	http://{域名}/chaincode/query
-参数说明
-参数	是否必须	说明
-fcn	是	函数名
-array	是	["a"]表示：查询a值
-post格式：{"fcn":"invoke","array":["a"]}
-返回说明
-正常情况下，返回下述JSON数据包：
 
-参数	说明
-	
+>    http请求方式： POST </br>
+    http请求地址：http://{域名}/chaincode/query</br>
+    参数：{"fcn":"query","array":["a"]}</br>
+    返回：</br>
+   <![endif]--></br>
+{</br>
+"result": "400",</br>
+"txid": "",</br>
+"status": 200</br>
+}
+
 #### 2) 区块信息接口：区块信息接口有根据交易Id查询区块数据、根据哈希值查询区块数据、根据区块高度查询区块数据、查询当前区块信息。
 * 根据交易Id查询区块数据：
-接口调用请求说明
-http请求方式	POST
-http请求地址	http://{域名}/chainblock/queryBlockByTransactionID
-参数说明
-参数	是否必须	说明
-txId	是	交易ID
-post格式：{"txId":"f30522c5db02341fa06cb0c1d662b2184d75eba1df7327af8c6327f1a11c4092"}
-返回说明
-正常情况下，返回下述JSON数据包：
 
-参数	说明
+>    http请求方式： POST </br>
+    http请求地址：http://{域名}/chainblock/queryBlockByTransactionID</br>
+    参数：{"txId":"f30522c5db02341fa06cb0c1d662b2184d75eba1df7327af8c6327f1a11c4092"}</br>
+    返回：</br>
+ <![endif]--></br>
+{</br>
+"data":  {</br>
+"dataHash": "",</br>
+"blockNumber": 2,</br>
+"calculatedBlockHash": "",</br>
+"envelopeCount": 1,</br>
+"envelopes": [  {</br>
+"transactionEnvelopeInfo":  {</br>
+"transactionActionInfoArray": [  {</br>
+"chaincodeInputArgsCount": 4,</br>
+"endorserInfoArray": [  {</br>
+"mspId": "Org1MSP",</br>
+"signature": "",</br>
+"id": ""</br>
+}],</br>
+"payload": "",</br>
+"argArray":  [</br>
+"invoke",</br>
+"b",</br>
+"a",</br>
+"5"</br>
+],</br>
+"endorsementsCount": 1,</br>
+"rwsetInfo":  {</br>
+"nsRwsetInfoArray":  [</br>
+{</br>
+"writeSet": [],</br>
+"readSet": [  {</br>
+"readSetIndex": 0,</br>
+"readVersionTxNum": 0,</br>
+"readVersionBlockNum": 1,</br>
+"namespace": "lscc",</br>
+"version": "[1 : 0]",</br>
+"key": "mycc"</br>
+}]</br>
+},</br>
+{</br>
+"writeSet":  [</br>
+{</br>
+"writeSetIndex": 0,</br>
+"namespace": "mycc",</br>
+"value": "205",</br>
+"key": "a"</br>
+},</br>
+{</br>
+"writeSetIndex": 1,</br>
+"namespace": "mycc",</br>
+"value": "395",</br>
+"key": "b"</br>
+}</br>
+],</br>
+"readSet":  [</br>
+{</br>
+"readSetIndex": 0,</br>
+"readVersionTxNum": 0,</br>
+"readVersionBlockNum": 1,</br>
+"namespace": "mycc",</br>
+"version": "[1 : 0]",</br>
+"key": "a"</br>
+},</br>
+{</br>
+"readSetIndex": 1,</br>
+"readVersionTxNum": 0,</br>
+"readVersionBlockNum": 1,</br>
+"namespace": "mycc",</br>
+"version": "[1 : 0]",</br>
+"key": "b"</br>
+}</br>
+]</br>
+}</br>
+],</br>
+"nsRWsetCount": 2</br>
+},</br>
+"responseStatus": 200,</br>
+"responseMessageString": "",</br>
+"status": 200</br>
+}],</br>
+"txCount": 1,</br>
+"isValid": true,</br>
+"validationCode": 0</br>
+},</br>
+"createId": "",</br>
+"isValid": true,</br>
+"validationCode": 0,</br>
+"type": "TRANSACTION_ENVELOPE",</br>
+"nonce": "",</br>
+"channelId": "mychannel",</br>
+"transactionID": "",</br>
+"createMSPID": "Org1MSP",</br>
+"timestamp": "2018/11/08 22:07:16"</br>
+}],</br>
+"previousHashID": ""</br>
+},</br>
+"status": 200</br>
+}</br>
 	
 * 根据哈希值查询区块数据：
 接口调用请求说明
@@ -782,4 +870,3 @@ export PATH=$PATH:$JAVA_HOME/bin
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/根据Hash查询区块.jpg"/ alt="根据HASH查询区块">
 </div>
- 
