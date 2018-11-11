@@ -1,9 +1,9 @@
-# Fabric Client Rest [![llong](https://img.shields.io/badge/made%20by-%E7%81%B5%E9%BE%99-brightgreen.svg)](http://www.cnblogs.com/aberic/)
+#Fabric Client Rest [![llong](https://img.shields.io/badge/made%20by-%E7%81%B5%E9%BE%99-brightgreen.svg)](http://www.cnblogs.com/aberic/)
 
-## 1.Java-SDK简介
+##1.Java-SDK简介
 Java-SDK是外部应用程序与Hyperledger Fabric的交互通道，帮助Java应用程序更好的管理Fabric通道和链码的生命周期，提供了链码管理、查询通道上的区块和交易数据的接口，及通道发生事件的监控。
 <br>
-## 2.Java-SDK代码分析
+##2.Java-SDK代码分析
 官方的fabric-sdk-java下载地址为https://github.com/hyperledger/fabric-sdk-java ，目前版本为Java SDK for Hyperledger Fabric 1.3，下载源码后，使用IntelliJ IDEA导入工程，显示结构如下：
 <div align=center>
    <img width="300" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/fabric-sdk-java源码.jpg"/ alt="fabric-sdk-java源码">
@@ -38,7 +38,7 @@ InstantiateProposalRequest	InstantiateProposalRequest是智能合约实例化提
 TransactionProposalRequest	TransactionProposalRequest是智能合约交易提案请求类。
 QueryByChaincodeRequest	QueryByChaincodeRequest是智能合约查询提案请求类。
 
-### 2.2	fabric_ca.sdk主要类关系图
+###2.2	fabric_ca.sdk主要类关系图
 类图：
 <div align=center>
    <img width="400" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/fabric_ca主要类.jpg"/ alt="fabric_ca主要类">
@@ -49,14 +49,14 @@ register	register是注册用户身份方法。
 enroll	enroll是登记用户身份方法。
 reenroll	reenroll是重新登记用户身份方法。
 revoke	revoke是注销已签发的用户证书方法。
-## 3 Java-SDK优化
+##3 Java-SDK优化
 Java-SDK直接调用对于初学者有很大的难度，为了最方便外部应用程序的调用，本节在官方Java-SDK的基础上进行优化和封装，提供简洁的、跨开发语言的调用方式。
-### 3.1	编码思路
+###3.1	编码思路
 封装官方Java-SDK代码，需要达到两个目的：
 1） 提供RESTful风格的调用方法，以http方式调用解决跨开发语言问题。
 2) 提供参数在线配置界面，包括排序（Orderer）IP地址、节点（peer）IP地址、智能合约（smart contract）所在目录等参数配置。
 封装的中间层工程取名为fabricClientRest，以下介绍工程的编码环境的搭建过程、开发类之间的关系及接口说明。
-### 3.2	编码环境搭建
+###3.2	编码环境搭建
 1) 创建工程
 步骤1：
 运行IntelliJ IDEA工具，点击File->New->Project...，新建工程，在New Project界面中选择“Maven”后，点击“Next”，界面如下所示：
@@ -146,10 +146,10 @@ Java-SDK直接调用对于初学者有很大的难度，为了最方便外部应
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤16.jpg"/ alt="编码环境搭建步骤16">
 </div>
-### 3.3	编码类图
+###3.3	编码类图
 Java-SDK优化工程fabricClientRest分clientrest模块和sdkinterface模块。clientrest模块实现RESTful风格调用的接口；sdkinterface模块实现与官方fabric-sdk-java接口进行交互。
 </br>
-#### 1) clientrest模块
+####1) clientrest模块
 clientrest模块包括控制器（controller）、服务（service）和接口(sdk)，配合实现RESTful接口和调用sdkinterface模块接口功能。
 </br>
 * 控制器（controller）：分为智能合约控制器类（ChainCodeController）和区块控制器类（ChainCodeController），第三方应用系统通过调用控制器提供的接口实现具体业务；
@@ -158,7 +158,7 @@ clientrest模块包括控制器（controller）、服务（service）和接口(s
 </br>
 * 接口(sdk)：SdkManager类以单例方式提供给服务（service）调用；SdkManager类实例化时，从数据库中读取区块链的各种配置，设置调用环境参数；功能通过实例化sdkinterface模块的SdkInterfaceOrg类，做为系统调用的统一入口。
 </br>
-#### 2) sdkinterface模块
+####2) sdkinterface模块
 sdkinterface模块实现官方fabric-sdk-java接口的优化，让使用者更清晰、最方便的调用。创建了SdkInterfaceOrg、SdkInterfaceChannel、SdkInterfaceOrderer、SdkInterfacePeer、SdkInterfaceChaincode和SdkInterfaceUser等类，都继承于SdkInterfaceBase类。
 * SdkInterfaceOrg类：组织类，对应Faric网络中的组织，类中包含组织名称、组织ID、排序（orderer）服务集合、节点（Peer）集合、通道和智能合约等变量；统一由该类提供接口给clientRest模块调用；
 * SdkInterfaceChannel类：通道类，负责处理通道相关接口，包括查询当前频道的链信息、根据交易Id查询区块数据、根据区块高度查询区块数据、根据交易Id查询区块数据；
@@ -170,9 +170,9 @@ sdkinterface模块实现官方fabric-sdk-java接口的优化，让使用者更�
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/fabricClientRest工程类关系.jpg"/ alt="fabricClientRest工程类关系">
 </div>
-### 3.4	REST接口说明
+###3.4	REST接口说明
 第三方系统调用的REST接口分为智能合约接口和区块信息接口。
-#### 1) 智能合约接口：智能合约接口有安装智能合约、实例化智能合约、升级智能合约、执行智能合约、查询智能合约。
+####1) 智能合约接口：智能合约接口有安装智能合约、实例化智能合约、升级智能合约、执行智能合约、查询智能合约。
 * 安装智能合约
 接口调用请求说明
 http请求方式	POST
@@ -239,7 +239,7 @@ post格式：{"fcn":"invoke","array":["a"]}
 
 参数	说明
 	
-#### 2) 区块信息接口：区块信息接口有根据交易Id查询区块数据、根据哈希值查询区块数据、根据区块高度查询区块数据、查询当前区块信息。
+####2) 区块信息接口：区块信息接口有根据交易Id查询区块数据、根据哈希值查询区块数据、根据区块高度查询区块数据、查询当前区块信息。
 * 根据交易Id查询区块数据：
 接口调用请求说明
 http请求方式	POST
@@ -292,10 +292,10 @@ post格式：无
 
 参数	说明
 	
-## 4 生产环境调用介绍
+##4 生产环境调用介绍
 生产环境中每个节点（Peer）对于一台服务器，每个节点（Peer）可能属于不同的企业，所以fabricClientRest spring boot项目在每个节点（Peer）中都部署一套，提供企业中第三方系统调用。
 以下将介绍fabricClientRest spring boot项目的打包、在linux下java安装及在kafka生产环境中运行客户端调试。
-### 4.1 项目打包
+###4.1 项目打包
 FabricClientRest工程中包括clientRest模块和sdkInterface模块，FabricClientRest的artifactId为fabric,只要在maven projects中双击package即可，生成的spring boot项目的jar文件在clientRest\target这个目录下。
 步骤1：打开FabricClientRest工程,界面显示如下：
 <div align=center>
@@ -313,7 +313,7 @@ FabricClientRest工程中包括clientRest模块和sdkInterface模块，FabricCli
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/生产环境调用介绍步骤4.jpg"/ alt="生产环境调用介绍步骤4">
 </div>
-### 4.2 java环境安装
+###4.2 java环境安装
 步骤5：下载JDK8，访问地址：http://www.oracle.com/technetwork/java/javase/downloads/jdk8-downloads-2133151.html，下载jdk-8u191-linux-x64.tar.gz文件，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/生产环境调用介绍步骤5.jpg"/ alt="生产环境调用介绍步骤5">
@@ -331,7 +331,7 @@ export PATH=$PATH:$JAVA_HOME/bin
 \# source /etc/profile
 步骤9：查看JDK版本
 \# java -version
-### 4.3 生产环境部署
+###4.3 生产环境部署
 步骤9：根据第十一章 Fabric kafka生产环境部署启动Fabric网络，kafka运行验证由java-sdk客户端处理。
 步骤10：运行clientrest的spring boot系统。
 \# cd /usr/local/clientrest
@@ -350,7 +350,7 @@ export PATH=$PATH:$JAVA_HOME/bin
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/生产环境调用介绍步骤14.jpg"/ alt="生产环境调用介绍步骤14">
 </div>
-### 4.4 客户端验证
+###4.4 客户端验证
 在SoapUI工具上通过调用FabricClientRest提供的REST接口验证各功能，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/SoapUI工具.jpg"/ alt="SoapUI工具">
