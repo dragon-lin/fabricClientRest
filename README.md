@@ -43,7 +43,7 @@ register	register是注册用户身份方法。
 enroll	enroll是登记用户身份方法。
 reenroll	reenroll是重新登记用户身份方法。
 revoke	revoke是注销已签发的用户证书方法。
-3	Java-SDK优化
+## 3 Java-SDK优化
 Java-SDK直接调用对于初学者有很大的难度，为了最方便外部应用程序的调用，本节在官方Java-SDK的基础上进行优化和封装，提供简洁的、跨开发语言的调用方式。
 3.1	编码思路
 封装官方Java-SDK代码，需要达到两个目的：
@@ -247,7 +247,7 @@ post格式：无
 
 参数	说明
 	
-4	生产环境调用介绍
+## 4 生产环境调用介绍
 生产环境中每个节点（Peer）对于一台服务器，每个节点（Peer）可能属于不同的企业，所以fabricClientRest spring boot项目在每个节点（Peer）中都部署一套，提供企业中第三方系统调用。
 以下将介绍fabricClientRest spring boot项目的打包、在linux下java安装及在kafka生产环境中运行客户端调试。
 4.1	项目打包
