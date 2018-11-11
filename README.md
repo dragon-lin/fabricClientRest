@@ -376,43 +376,226 @@ sdkinterface模块实现官方fabric-sdk-java接口的优化，让使用者更�
 }</br>
 	
 * 根据哈希值查询区块数据：
-接口调用请求说明
-http请求方式	POST
-http请求地址	http://{域名}/chainblock/queryBlockByHash
-参数说明
-参数	是否必须	说明
-hash	是	Hash值
-post格式：{"hash":"ff0ceb01a804e98fae405ea075748fa149899e85bc0f03f939c9b6e7f6b89668"}
-返回说明
-正常情况下，返回下述JSON数据包：
 
-参数	说明
+>    http请求方式： POST </br>
+    http请求地址：http://{域名}/chainblock/queryBlockByHash</br>
+    参数：{"hash":"ff0ceb01a804e98fae405ea075748fa149899e85bc0f03f939c9b6e7f6b89668"}</br>
+    返回：</br>
+ <![endif]--></br>
+{</br>
+"data":  {</br>
+"dataHash": "",</br>
+"blockNumber": 2,</br>
+"calculatedBlockHash": "",</br>
+"envelopeCount": 1,</br>
+"envelopes": [  {</br>
+"transactionEnvelopeInfo":  {</br>
+"transactionActionInfoArray": [  {</br>
+"chaincodeInputArgsCount": 4,</br>
+"endorserInfoArray": [  {</br>
+"mspId": "Org1MSP",</br>
+"signature": "",</br>
+"id": ""</br>
+}],</br>
+"payload": "",</br>
+"argArray":  [</br>
+"invoke",</br>
+"b",</br>
+"a",</br>
+"5"</br>
+],</br>
+"endorsementsCount": 1,</br>
+"rwsetInfo":  {</br>
+"nsRwsetInfoArray":  [</br>
+{</br>
+"writeSet": [],</br>
+"readSet": [  {</br>
+"readSetIndex": 0,</br>
+"readVersionTxNum": 0,</br>
+"readVersionBlockNum": 1,</br>
+"namespace": "lscc",</br>
+"version": "[1 : 0]",</br>
+"key": "mycc"</br>
+}]</br>
+},</br>
+{</br>
+"writeSet":  [</br>
+{</br>
+"writeSetIndex": 0,</br>
+"namespace": "mycc",</br>
+"value": "205",</br>
+"key": "a"</br>
+},</br>
+{</br>
+"writeSetIndex": 1,</br>
+"namespace": "mycc",</br>
+"value": "395",</br>
+"key": "b"</br>
+}</br>
+],</br>
+"readSet":  [</br>
+{</br>
+"readSetIndex": 0,</br>
+"readVersionTxNum": 0,</br>
+"readVersionBlockNum": 1,</br>
+"namespace": "mycc",</br>
+"version": "[1 : 0]",</br>
+"key": "a"</br>
+},</br>
+{</br>
+"readSetIndex": 1,</br>
+"readVersionTxNum": 0,</br>
+"readVersionBlockNum": 1,</br>
+"namespace": "mycc",</br>
+"version": "[1 : 0]",</br>
+"key": "b"</br>
+}</br>
+]</br>
+}</br>
+],</br>
+"nsRWsetCount": 2</br>
+},</br>
+"responseStatus": 200,</br>
+"responseMessageString": "",</br>
+"status": 200</br>
+}],</br>
+"txCount": 1,</br>
+"isValid": true,</br>
+"validationCode": 0</br>
+},</br>
+"createId": "",</br>
+"isValid": true,</br>
+"validationCode": 0,</br>
+"type": "TRANSACTION_ENVELOPE",</br>
+"nonce": "",</br>
+"channelId": "mychannel",</br>
+"transactionID": "",</br>
+"createMSPID": "Org1MSP",</br>
+"timestamp": "2018/11/08 22:07:16"</br>
+}],</br>
+"previousHashID": ""</br>
+},</br>
+"status": 200</br>
+}</br>
 	
 * 根据区块高度查询区块数据：
-接口调用请求说明
-http请求方式	POST
-http请求地址	http://{域名}/chainblock/queryBlockByNumber
-参数说明
-参数	是否必须	说明
-blockNumber	是	区块高度
-post格式：{"blockNumber":"1"}
-返回说明
-正常情况下，返回下述JSON数据包：
 
-参数	说明
+>    http请求方式： POST </br>
+    http请求地址：http://{域名}/chainblock/queryBlockByNumber</br>
+    参数：{"blockNumber":"1"}</br>
+    返回：</br>
+ <![endif]--></br>
+{</br>
+"data":  {</br>
+"dataHash": "",</br>
+"blockNumber": 2,</br>
+"calculatedBlockHash": "",</br>
+"envelopeCount": 1,</br>
+"envelopes": [  {</br>
+"transactionEnvelopeInfo":  {</br>
+"transactionActionInfoArray": [  {</br>
+"chaincodeInputArgsCount": 4,</br>
+"endorserInfoArray": [  {</br>
+"mspId": "Org1MSP",</br>
+"signature": "",</br>
+"id": ""</br>
+}],</br>
+"payload": "",</br>
+"argArray":  [</br>
+"invoke",</br>
+"b",</br>
+"a",</br>
+"5"</br>
+],</br>
+"endorsementsCount": 1,</br>
+"rwsetInfo":  {</br>
+"nsRwsetInfoArray":  [</br>
+{</br>
+"writeSet": [],</br>
+"readSet": [  {</br>
+"readSetIndex": 0,</br>
+"readVersionTxNum": 0,</br>
+"readVersionBlockNum": 1,</br>
+"namespace": "lscc",</br>
+"version": "[1 : 0]",</br>
+"key": "mycc"</br>
+}]</br>
+},</br>
+{</br>
+"writeSet":  [</br>
+{</br>
+"writeSetIndex": 0,</br>
+"namespace": "mycc",</br>
+"value": "205",</br>
+"key": "a"</br>
+},</br>
+{</br>
+"writeSetIndex": 1,</br>
+"namespace": "mycc",</br>
+"value": "395",</br>
+"key": "b"</br>
+}</br>
+],</br>
+"readSet":  [</br>
+{</br>
+"readSetIndex": 0,</br>
+"readVersionTxNum": 0,</br>
+"readVersionBlockNum": 1,</br>
+"namespace": "mycc",</br>
+"version": "[1 : 0]",</br>
+"key": "a"</br>
+},</br>
+{</br>
+"readSetIndex": 1,</br>
+"readVersionTxNum": 0,</br>
+"readVersionBlockNum": 1,</br>
+"namespace": "mycc",</br>
+"version": "[1 : 0]",</br>
+"key": "b"</br>
+}</br>
+]</br>
+}</br>
+],</br>
+"nsRWsetCount": 2</br>
+},</br>
+"responseStatus": 200,</br>
+"responseMessageString": "",</br>
+"status": 200</br>
+}],</br>
+"txCount": 1,</br>
+"isValid": true,</br>
+"validationCode": 0</br>
+},</br>
+"createId": "",</br>
+"isValid": true,</br>
+"validationCode": 0,</br>
+"type": "TRANSACTION_ENVELOPE",</br>
+"nonce": "",</br>
+"channelId": "mychannel",</br>
+"transactionID": "",</br>
+"createMSPID": "Org1MSP",</br>
+"timestamp": "2018/11/08 22:07:16"</br>
+}],</br>
+"previousHashID": ""</br>
+},</br>
+"status": 200</br>
+}</br>
 	
 * 查询当前区块信息：
-接口调用请求说明
-http请求方式	POST
-http请求地址	http://{域名}/chainblock/queryBlockchainInfo
-参数说明
-参数	是否必须	说明
--	-	-
-post格式：无
-返回说明
-正常情况下，返回下述JSON数据包：
 
-参数	说明
+>    http请求方式： POST </br>
+    http请求地址：http://{域名}/chainblock/queryBlockchainInfo</br>
+    参数：-</br>
+    返回：</br>
+<![endif]--></br>
+{</br>
+"data": {</br>
+"previousBlockHash": "",</br>
+"currentBlockHash": "",</br>
+"height": 2</br>
+},</br>
+"status": 200</br>
+}</br>
 	
 ## 4 生产环境调用介绍
 生产环境中每个节点（Peer）对于一台服务器，每个节点（Peer）可能属于不同的企业，所以fabricClientRest spring boot项目在每个节点（Peer）中都部署一套，提供企业中第三方系统调用。
