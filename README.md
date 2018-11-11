@@ -150,11 +150,14 @@ Java-SDK直接调用对于初学者有很大的难度，为了最方便外部应
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤15.jpg"/ alt="编码环境搭建步骤15">
 </div>
 
-##### 步骤16：
-创建RESTful风格访问的所需类，代码结构分为控制器（controller）、服务（service）和接口(sdk)三部分。
+##### 步骤16：创建RESTful风格访问的所需类，代码结构分为控制器（controller）、服务（service）和接口(sdk)三部分。
+
 * 控件器（controller）：分为智能合约控制器（ChainCodeController）和区块控制器（ChainCodeController）,文件创建在rest包目录下面。
+
 * 服务（service）：分为智能合约服务（ChainCodeService）和区块服务（ChainCodeService）,接口文件在service包目录下面创建；实现文件在service\impl目录下面创建。
+
 * 接口(sdk)：一端以单例方式提供给服务层调用，另一端调用sdkInterface工程中的接口。
+
 界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤16.jpg"/ alt="编码环境搭建步骤16">
@@ -382,6 +385,7 @@ export PATH=$PATH:$JAVA_HOME/bin
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/生产环境调用介绍步骤14.jpg"/ alt="生产环境调用介绍步骤14">
 </div>
+
 ##### 步骤15：点击File->import Project，在出现的界面中加载Fabric-sdk-soapui-project.xml（在光盘中有该文件），界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/生产环境调用介绍步骤15.jpg"/ alt="生产环境调用介绍步骤15">
