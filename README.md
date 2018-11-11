@@ -2,7 +2,7 @@
 
 ## 1.Java-SDK简介
 Java-SDK是外部应用程序与Hyperledger Fabric的交互通道，帮助Java应用程序更好的管理Fabric通道和链码的生命周期，提供了链码管理、查询通道上的区块和交易数据的接口，及通道发生事件的监控。
-<br>
+
 ## 2.Java-SDK代码分析
 官方的fabric-sdk-java下载地址为https://github.com/hyperledger/fabric-sdk-java ，目前版本为Java SDK for Hyperledger Fabric 1.3，下载源码后，使用IntelliJ IDEA导入工程，显示结构如下：
 <div align=center>
@@ -21,6 +21,7 @@ Java-SDK是外部应用程序与Hyperledger Fabric的交互通道，帮助Java�
         </dependency>
 </dependencies>
 外部应用程序访问区块链是通过实例化HFClient类，调用类中的接口。访问Fabric ca是通过实例化HFCAClient类，调用类中的接口。
+
 ### 2.1 fabric.sdk主要类关系图
 类图如下：
 <div align=center>
@@ -51,12 +52,14 @@ reenroll	reenroll是重新登记用户身份方法。
 revoke	revoke是注销已签发的用户证书方法。
 ##3 Java-SDK优化
 Java-SDK直接调用对于初学者有很大的难度，为了最方便外部应用程序的调用，本节在官方Java-SDK的基础上进行优化和封装，提供简洁的、跨开发语言的调用方式。
-###3.1	编码思路
+
+### 3.1	编码思路
 封装官方Java-SDK代码，需要达到两个目的：
 1） 提供RESTful风格的调用方法，以http方式调用解决跨开发语言问题。
 2) 提供参数在线配置界面，包括排序（Orderer）IP地址、节点（peer）IP地址、智能合约（smart contract）所在目录等参数配置。
 封装的中间层工程取名为fabricClientRest，以下介绍工程的编码环境的搭建过程、开发类之间的关系及接口说明。
-###3.2	编码环境搭建
+
+### 3.2	编码环境搭建
 1) 创建工程
 步骤1：
 运行IntelliJ IDEA工具，点击File->New->Project...，新建工程，在New Project界面中选择“Maven”后，点击“Next”，界面如下所示：
