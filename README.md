@@ -53,11 +53,13 @@ Java-SDK是外部应用程序与Hyperledger Fabric的交互通道，帮助Java�
    <img width="400" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/fabric_ca主要类.jpg"/ alt="fabric_ca主要类">
 </div>
 类说明：
-主要方法	说明
-register	register是注册用户身份方法。
-enroll	enroll是登记用户身份方法。
-reenroll	reenroll是重新登记用户身份方法。
-revoke	revoke是注销已签发的用户证书方法。
+
+| 主要方法 | 说明 |
+|--|--|
+| register | register是注册用户身份方法。 |
+| enroll | enroll是登记用户身份方法。 |
+| reenroll | reenroll是重新登记用户身份方法。 |
+| revoke | revoke是注销已签发的用户证书方法。 |
 
 ## 3 Java-SDK优化
 Java-SDK直接调用对于初学者有很大的难度，为了最方便外部应用程序的调用，本节在官方Java-SDK的基础上进行优化和封装，提供简洁的、跨开发语言的调用方式。
@@ -203,17 +205,20 @@ sdkinterface模块实现官方fabric-sdk-java接口的优化，让使用者更�
 
 #### 1) 智能合约接口：智能合约接口有安装智能合约、实例化智能合约、升级智能合约、执行智能合约、查询智能合约。
 * 安装智能合约
-接口调用请求说明
-http请求方式	POST
-http请求地址	http://{域名}/chaincode/install
-参数说明
-参数	是否必须	说明
--	-	-
-返回说明
-正常情况下，返回下述JSON数据包：
 
-参数	说明
-	
+| 接口调用请求说明 |
+|--|
+| http请求方式： POST |
+| http请求地址：http://{域名}/chaincode/install|
+|参数：-|
+|返回：
+<![endif]-->
+{
+"result": "OK",
+"txid": "",
+"status": 200
+}
+
 * 实例化智能合约
 接口调用请求说明
 http请求方式	POST
