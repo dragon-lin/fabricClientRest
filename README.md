@@ -9,9 +9,11 @@ Java-SDK是外部应用程序与Hyperledger Fabric的交互通道，帮助Java�
    <img width="300" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/fabric-sdk-java源码.jpg"/ alt="fabric-sdk-java源码">
 </div>
 源码包括两个包：org.hyperledger.fabric.sdk和org.hyperledger.fabric_ca.sdk。
+
 * org.hyperledger.fabric.sdk：提供与区块链交互的接口，包括创建通道、加入通道、查询通道等通道接口；安装链码、案例化链码、发起交易、查询交易等链码接口；根据编号查询区块、根据Hash值查询区块等区块接口。
 * org.hyperledger.fabric_ca.sdk：提供与fabric ca的交互的接口，包括登记、注册、销毁证书等接口。
 外部应用程序要通过fabric-java-sdk接口调用Fabric网络数据，只需在pom.xml文件中引入如下代码，即可调用：
+
 <dependencies>
         <!-- https://mvnrepository.com/artifact/org.hyperledger.fabric-sdk-java/fabric-sdk-java -->
         <dependency>
@@ -20,6 +22,7 @@ Java-SDK是外部应用程序与Hyperledger Fabric的交互通道，帮助Java�
             <version>1.2.0-SNAPSHOT</version>
         </dependency>
 </dependencies>
+
 外部应用程序访问区块链是通过实例化HFClient类，调用类中的接口。访问Fabric ca是通过实例化HFCAClient类，调用类中的接口。
 
 ### 2.1 fabric.sdk主要类关系图
@@ -56,12 +59,15 @@ Java-SDK直接调用对于初学者有很大的难度，为了最方便外部应
 
 ### 3.1	编码思路
 封装官方Java-SDK代码，需要达到两个目的：
-1） 提供RESTful风格的调用方法，以http方式调用解决跨开发语言问题。
-2) 提供参数在线配置界面，包括排序（Orderer）IP地址、节点（peer）IP地址、智能合约（smart contract）所在目录等参数配置。
+
+#### 1） 提供RESTful风格的调用方法，以http方式调用解决跨开发语言问题。
+
+#### 2) 提供参数在线配置界面，包括排序（Orderer）IP地址、节点（peer）IP地址、智能合约（smart contract）所在目录等参数配置。
+
 封装的中间层工程取名为fabricClientRest，以下介绍工程的编码环境的搭建过程、开发类之间的关系及接口说明。
 
 ### 3.2	编码环境搭建
-1) 创建工程
+#### 1) 创建工程
 
 步骤1：
 
@@ -84,7 +90,8 @@ Java-SDK直接调用对于初学者有很大的难度，为了最方便外部应
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤4.jpg"/ alt="编码环境搭建步骤4">
 </div>
-2) 创建sdkInterface模块
+
+#### 2) 创建sdkInterface模块
 步骤5：
 在创建的工程fabricClientRest中右击，在显示的菜单中选择“New->Module”，界面如下所示：
 <div align=center>
@@ -105,13 +112,15 @@ Java-SDK直接调用对于初学者有很大的难度，为了最方便外部应
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤8.jpg"/ alt="编码环境搭建步骤8">
 </div>
-3) 生成sdkInterface模块所需类
+
+#### 3) 生成sdkInterface模块所需类
 步骤9：
 在工程界面中右击com.winyeahs.fabric.sdkinterface包目录，在弹出的菜单中选择“New->Java Class”，依次创建SdkInterfaceBase、SdkInterfaceOrg、SdkInterfaceOrderer、SdkInterfacePeer、SdkInterfaceUser、SdkInterfaceChannel、SdkInterfaceChaincode等类，类中的具体代码查看源码文件，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤9.jpg"/ alt="编码环境搭建步骤9">
 </div>
-4) 创建clientRest模块
+
+#### 4) 创建clientRest模块
 步骤10：
 	在创建的工程fabricClientRest中右击，在显示的菜单中选择“New->Module”，界面如下所示：
 <div align=center>
