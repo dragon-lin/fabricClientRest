@@ -21,7 +21,7 @@ Java-SDK是外部应用程序与Hyperledger Fabric的交互通道，帮助Java�
         </dependency>
 </dependencies>
 外部应用程序访问区块链是通过实例化HFClient类，调用类中的接口。访问Fabric ca是通过实例化HFCAClient类，调用类中的接口。
-### 2.1 fabric.sdk主要类关系图
+###2.1 fabric.sdk主要类关系图
 类图如下：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/fabric主要类关系.jpg"/ alt="fabric主要类关系">
