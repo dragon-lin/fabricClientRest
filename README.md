@@ -69,78 +69,65 @@ Java-SDK直接调用对于初学者有很大的难度，为了最方便外部应
 ### 3.2	编码环境搭建
 #### 1) 创建工程
 
-##### 步骤1：
-
-运行IntelliJ IDEA工具，点击File->New->Project...，新建工程，在New Project界面中选择“Maven”后，点击“Next”，界面如下所示：
+##### 步骤1：运行IntelliJ IDEA工具，点击File->New->Project...，新建工程，在New Project界面中选择“Maven”后，点击“Next”，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤1.jpg"/ alt="编码环境搭建步骤1">
 </div>
 
-##### 步骤2：
-设置GroupId为“com.winyeahs.fabric”,ArtifactId为“fabric”,点击“Next”，界面如下所示：
+##### 步骤2：设置GroupId为“com.winyeahs.fabric”,ArtifactId为“fabric”,点击“Next”，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤2.jpg"/ alt="编码环境搭建步骤2">
 </div>
 
-##### 步骤3：
-设置Project name为“fabricClientRest”，Project locatiion为“[目录]\fabricClientRest”,点击“Finish” ，界面如下所示：
+##### 步骤3：设置Project name为“fabricClientRest”，Project locatiion为“[目录]\fabricClientRest”,点击“Finish” ，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤3.jpg"/ alt="编码环境搭建步骤3">
 </div>
 
-##### 步骤4：
-创建的工程为总的工程，不需要编写代码，逻辑代码在“sdkInterface” 模块和“clientRest” 模块中编写；选择 “src”目录，右击后，在弹出的菜单中选择“Delete...”,删除“src”目录，界面如下所示：
+##### 步骤4：创建的工程为总的工程，不需要编写代码，逻辑代码在“sdkInterface” 模块和“clientRest” 模块中编写；选择 “src”目录，右击后，在弹出的菜单中选择“Delete...”,删除“src”目录，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤4.jpg"/ alt="编码环境搭建步骤4">
 </div>
 
 #### 2) 创建sdkInterface模块
-##### 步骤5：
-在创建的工程fabricClientRest中右击，在显示的菜单中选择“New->Module”，界面如下所示：
+##### 步骤5：在创建的工程fabricClientRest中右击，在显示的菜单中选择“New->Module”，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤5.jpg"/ alt="编码环境搭建步骤5">
 </div>
 
-##### 步骤6：
-在New Module界面中，选择“Maven”，其它默认设置，点击“Next”，界面如下所示：
+##### 步骤6：在New Module界面中，选择“Maven”，其它默认设置，点击“Next”，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤6.jpg"/ alt="编码环境搭建步骤6">
 </div>
 
-##### 步骤7：
-设置GroupId为“com.winyeahs.fabric.sdkinterface”，Artifact为“sdkinterface”,点击“Nest”，界面如下所示：
+##### 步骤7：设置GroupId为“com.winyeahs.fabric.sdkinterface”，Artifact为“sdkinterface”,点击“Nest”，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤7.jpg"/ alt="编码环境搭建步骤7">
 </div>
 
-##### 步骤8：
-设置Content root和Module file location，点击“Finish”，界面如下所示：
+##### 步骤8：设置Content root和Module file location，点击“Finish”，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤8.jpg"/ alt="编码环境搭建步骤8">
 </div>
 
 #### 3) 生成sdkInterface模块所需类
-##### 步骤9：
-在工程界面中右击com.winyeahs.fabric.sdkinterface包目录，在弹出的菜单中选择“New->Java Class”，依次创建SdkInterfaceBase、SdkInterfaceOrg、SdkInterfaceOrderer、SdkInterfacePeer、SdkInterfaceUser、SdkInterfaceChannel、SdkInterfaceChaincode等类，类中的具体代码查看源码文件，界面如下所示：
+##### 步骤9：在工程界面中右击com.winyeahs.fabric.sdkinterface包目录，在弹出的菜单中选择“New->Java Class”，依次创建SdkInterfaceBase、SdkInterfaceOrg、SdkInterfaceOrderer、SdkInterfacePeer、SdkInterfaceUser、SdkInterfaceChannel、SdkInterfaceChaincode等类，类中的具体代码查看源码文件，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤9.jpg"/ alt="编码环境搭建步骤9">
 </div>
 
 #### 4) 创建clientRest模块
-##### 步骤10：
-在创建的工程fabricClientRest中右击，在显示的菜单中选择“New->Module”，界面如下所示：
+##### 步骤10：在创建的工程fabricClientRest中右击，在显示的菜单中选择“New->Module”，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤10.jpg"/ alt="编码环境搭建步骤10">
 </div>
 
-##### 步骤11：
-在New Module界面中，选择“spring initializr”，其它默认设置，点击“Next”，界面如下所示：
+##### 步骤11：在New Module界面中，选择“spring initializr”，其它默认设置，点击“Next”，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤11.jpg"/ alt="编码环境搭建步骤11">
 </div>
 
-##### 步骤12：
-设置Group为“com.winyeahs.fabric.clientrest”，Artifact为“clientrest”,点击“Nest”，界面如下所示：
+##### 步骤12：设置Group为“com.winyeahs.fabric.clientrest”，Artifact为“clientrest”,点击“Nest”，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤12.jpg"/ alt="编码环境搭建步骤12">
 </div>
@@ -151,14 +138,14 @@ Java-SDK直接调用对于初学者有很大的难度，为了最方便外部应
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤13.jpg"/ alt="编码环境搭建步骤13">
 </div>
 
-##### 步骤14：
-设置Content root和Module file location，点击“Finish”，界面如下所示：
+##### 步骤14：设置Content root和Module file location，点击“Finish”，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤14.jpg"/ alt="编码环境搭建步骤14">
 </div>
-5) 生成clientRest模块所需类
-步骤15：
-在工程界面中右击com.winyeahs.fabric.clientrest包目录，在弹出的菜单中选择“New->Package”，依次创建rest、sdk、service包，界面如下所示：
+
+#### 5) 生成clientRest模块所需类
+
+##### 步骤15：在工程界面中右击com.winyeahs.fabric.clientrest包目录，在弹出的菜单中选择“New->Package”，依次创建rest、sdk、service包，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/编码环境搭建步骤15.jpg"/ alt="编码环境搭建步骤15">
 </div>
@@ -373,32 +360,34 @@ export PATH=$PATH:$JAVA_HOME/bin
 
 ##### 步骤8：环境变量设置立即生效
 \# source /etc/profile
-步骤9：查看JDK版本
+
+##### 步骤9：查看JDK版本
 \# java -version
 
 ### 4.3 生产环境部署
-##### 步骤9：根据第十一章 Fabric kafka生产环境部署启动Fabric网络，kafka运行验证由java-sdk客户端处理。
+##### 步骤10：根据第十一章 Fabric kafka生产环境部署启动Fabric网络，kafka运行验证由java-sdk客户端处理。
 
-##### 步骤10：运行clientrest的spring boot系统。
+##### 步骤11：运行clientrest的spring boot系统。
 \# cd /usr/local/clientrest
 \# netstat -lanp|grep 8080
 \# kill -9 XXXX
 \# nohup java -jar clientrest-1.0-SNAPSHOT.jar >springboot.log 2>&1 &
 \#  tail -f springboot.log
 
-##### 步骤11：拷贝整个crypto-config目录和Fabric-sdk-soapui-project.xml到/usr/local/clientrest目录中。
+##### 步骤12：拷贝整个crypto-config目录和Fabric-sdk-soapui-project.xml到/usr/local/clientrest目录中。
 
-##### 步骤12：验证是否正常运行，通过浏览器访问http://192.168.235.7：8080，出现如下界面表示系统已正确部署。
+##### 步骤13：验证是否正常运行，通过浏览器访问http://192.168.235.7：8080，出现如下界面表示系统已正确部署。
  
-##### 步骤13：安装SoapUI测试工具（在光盘中有安装软件），安装完后运行的界面如下：
-<div align=center>
-   <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/生产环境调用介绍步骤13.jpg"/ alt="生产环境调用介绍步骤13">
-</div>
-##### 步骤14：点击File->import Project，在出现的界面中加载Fabric-sdk-soapui-project.xml（在光盘中有该文件），界面如下所示：
+##### 步骤14：安装SoapUI测试工具（在光盘中有安装软件），安装完后运行的界面如下：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/生产环境调用介绍步骤14.jpg"/ alt="生产环境调用介绍步骤14">
 </div>
-###4.4 客户端验证
+##### 步骤15：点击File->import Project，在出现的界面中加载Fabric-sdk-soapui-project.xml（在光盘中有该文件），界面如下所示：
+<div align=center>
+   <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/生产环境调用介绍步骤15.jpg"/ alt="生产环境调用介绍步骤15">
+</div>
+
+### 4.4 客户端验证
 在SoapUI工具上通过调用FabricClientRest提供的REST接口验证各功能，界面如下所示：
 <div align=center>
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/SoapUI工具.jpg"/ alt="SoapUI工具">
