@@ -33,6 +33,7 @@ Java-SDK是外部应用程序与Hyperledger Fabric的交互通道，帮助Java�
 </div>
 
 类说明：
+
 | 类名 | 说明 |
 |--|--|
 | HFClient	Hyperledger |  fabric客户端访问类，通过实例化HFClient类，调用其中的接口与区块链交互。 |
