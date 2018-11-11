@@ -31,6 +31,7 @@ Java-SDK是外部应用程序与Hyperledger Fabric的交互通道，帮助Java�
    <img width="600" src="https://github.com/dragon-lin/fabricClientRest/raw/master/readme-img/fabric主要类关系.jpg"/ alt="fabric主要类关系">
 </div>
 类说明：
+
 类名	说明
 HFClient	Hyperledger fabric客户端访问类，通过实例化HFClient类，调用其中的接口与区块链交互。
 Orderer	Orderer类实现客户端部署、调用和查询排序（Orderer）服务。
