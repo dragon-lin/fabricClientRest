@@ -206,18 +206,18 @@ sdkinterface模块实现官方fabric-sdk-java接口的优化，让使用者更�
 #### 1) 智能合约接口：智能合约接口有安装智能合约、实例化智能合约、升级智能合约、执行智能合约、查询智能合约。
 * 安装智能合约
 
-| 接口调用请求说明 |
-|--|
-| http请求方式： POST |
-| http请求地址：http://{域名}/chaincode/install|
-|参数：-|
-|返回：
-<![endif]-->
-{
-"result": "OK",
-"txid": "",
-"status": 200
-}|
+接口调用请求说明
+
+    http请求方式： POST
+    http请求地址：http://{域名}/chaincode/install
+    参数：-
+    返回：
+    <![endif]-->
+    {
+    "result": "OK",
+    "txid": "",
+    "status": 200
+    } 
 
 * 实例化智能合约
 接口调用请求说明
