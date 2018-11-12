@@ -651,10 +651,15 @@ export PATH=$PATH:$JAVA_HOME/bin
 **步骤10：** 根据第十一章 Fabric kafka生产环境部署启动Fabric网络，kafka运行验证由java-sdk客户端处理。
 
 **步骤11：** 运行clientrest的spring boot系统。
+
 \# cd /usr/local/clientrest
+
 \# netstat -lanp|grep 8080
+
 \# kill -9 XXXX
+
 \# nohup java -jar clientrest-1.0-SNAPSHOT.jar >springboot.log 2>&1 &
+
 \#  tail -f springboot.log
 
 **步骤12：** 拷贝整个crypto-config目录和Fabric-sdk-soapui-project.xml到/usr/local/clientrest目录中。
