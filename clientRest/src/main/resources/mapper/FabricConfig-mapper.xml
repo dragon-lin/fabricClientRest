@@ -1,0 +1,126 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.winyeahs.fabric.clientrest.mapper.FabricConfigMapper">
+
+    <select id="queryFabricConfig" resultType="FabricConfigModel" >
+        SELECT * FROM fabric_config
+        <where>
+            is_delete=0
+            <if test="leagueId != null and leagueId != ''">
+                AND league_id = #{leagueId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="addFabricConfig" parameterType="FabricConfigModel">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="row_id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO fabric_config(league_id,org_name,user_name,cryptoconfig_path,channelartifacts_path,org_mspid,org_domain,orderer_domain,channel_name,chaincode_name,chaincode_source,chaincode_path,chaincode_policy, chaincode_version, proposal_waittime,invoke_waittime,is_tls,is_catls,is_delete)
+                           VALUES(#{league_id}, #{org_name}, #{user_name}, #{cryptoconfig_path}, #{channelartifacts_path}, #{org_mspid}, #{org_domain}, #{orderer_domain}, #{channel_name}, #{chaincode_name}, #{chaincode_source}, #{chaincode_path}, #{chaincode_policy}, #{chaincode_version}, #{proposal_waittime}, #{invoke_waittime}, #{is_tls}, #{is_catls}, 0)
+    </insert>
+
+    <update id="modifyFabricConfig" parameterType="FabricConfigModel">
+        UPDATE fabric_config
+        <set>
+            <if test="league_id != null">league_id=#{league_id},</if>
+            <if test="org_name != null">org_name=#{org_name},</if>
+            <if test="user_name != null">user_name=#{user_name},</if>
+            <if test="cryptoconfig_path != null">cryptoconfig_path=#{cryptoconfig_path},</if>
+            <if test="channelartifacts_path != null">channelartifacts_path=#{channelartifacts_path},</if>
+            <if test="org_mspid != null">org_mspid=#{org_mspid},</if>
+            <if test="org_domain != null">org_domain=#{org_domain},</if>
+            <if test="orderer_domain != null">orderer_domain=#{orderer_domain},</if>
+            <if test="channel_name != null">channel_name=#{channel_name},</if>
+            <if test="chaincode_name != null">chaincode_name=#{chaincode_name},</if>
+            <if test="chaincode_source != null">chaincode_source=#{chaincode_source},</if>
+            <if test="chaincode_path != null">chaincode_path=#{chaincode_path},</if>
+            <if test="chaincode_policy != null">chaincode_policy=#{chaincode_policy},</if>
+            <if test="chaincode_version != null">chaincode_version=#{chaincode_version},</if>
+            <if test="proposal_waittime != null">proposal_waittime=#{proposal_waittime},</if>
+            <if test="invoke_waittime != null">invoke_waittime=#{invoke_waittime},</if>
+            <if test="is_tls != null">is_tls=#{is_tls},</if>
+            <if test="is_catls != null">is_catls=#{is_catls},</if>
+        </set>
+        WHERE row_id=#{row_id}
+    </update>
+
+    <select id="queryFabricOrderer" resultType="FabricConfigOrdererModel" >
+        SELECT * FROM fabric_orderer
+        <where>
+            is_delete=0
+            <if test="configId != null and configId > 0">
+                AND config_id = #{configId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="addFabricOrderer" parameterType="FabricConfigOrdererModel">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="row_id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO fabric_orderer(orderer_name,orderer_location,config_id,is_delete) VALUES(#{orderer_name}, #{orderer_location}, #{config_id}, 0)
+    </insert>
+
+    <update id="modifyFabricOrderer" parameterType="FabricConfigOrdererModel">
+        UPDATE fabric_orderer
+        <set>
+            <if test="orderer_name != null">orderer_name=#{orderer_name},</if>
+            <if test="orderer_location != null">orderer_location=#{orderer_location},</if>
+            <if test="config_id != null">config_id=#{config_id},</if>
+        </set>
+        WHERE row_id=#{row_id}
+    </update>
+
+    <delete id="deleteFabricOrderer" parameterType="int" >
+        UPDATE fabric_orderer SET is_delete=1
+        <where>
+            <if test="configId != null and configId > 0">
+                config_id = #{configId}
+            </if>
+        </where>
+    </delete>
+
+    <select id="queryFabricPeer" resultType="FabricConfigPeerModel" >
+        SELECT * FROM fabric_peer
+        <where>
+            is_delete=0
+            <if test="configId != null and configId > 0">
+                AND config_id = #{configId}
+            </if>
+        </where>
+    </select>
+
+    <insert id="addFabricPeer" parameterType="FabricConfigPeerModel">
+        <selectKey resultType="java.lang.Integer" order="AFTER" keyProperty="row_id">
+            SELECT LAST_INSERT_ID()
+        </selectKey>
+        INSERT INTO fabric_peer(peer_name,peer_eventhubname,peer_location,peer_eventhublocation,is_eventlistener,config_id,is_delete)
+                         VALUES(#{peer_name}, #{peer_eventhubname}, #{peer_location}, #{peer_eventhublocation}, #{is_eventlistener}, #{config_id}, 0)
+    </insert>
+
+    <update id="modifyFabricPeer" parameterType="FabricConfigPeerModel">
+        UPDATE fabric_peer
+        <set>
+            <if test="peer_name != null">peer_name=#{peer_name},</if>
+            <if test="peer_eventhubname != null">peer_eventhubname=#{peer_eventhubname},</if>
+            <if test="peer_location != null">peer_location=#{peer_location},</if>
+            <if test="peer_eventhublocation != null">peer_eventhublocation=#{peer_eventhublocation},</if>
+            <if test="is_eventlistener != null">is_eventlistener=#{is_eventlistener},</if>
+            <if test="config_id != null">config_id=#{config_id},</if>
+        </set>
+        WHERE row_id=#{row_id}
+    </update>
+
+    <delete id="deleteFabricPeer" parameterType="int" >
+        UPDATE fabric_peer SET is_delete=1
+        <where>
+            <if test="configId != null and configId > 0">
+                config_id = #{configId}
+            </if>
+        </where>
+    </delete>
+</mapper>

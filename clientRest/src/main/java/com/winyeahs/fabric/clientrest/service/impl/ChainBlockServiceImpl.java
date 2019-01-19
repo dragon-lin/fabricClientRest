@@ -1,8 +1,10 @@
 package com.winyeahs.fabric.clientrest.service.impl;
 
 import com.alibaba.fastjson.JSONObject;
+import com.winyeahs.fabric.clientrest.mapper.FabricConfigMapper;
 import com.winyeahs.fabric.clientrest.sdk.SdkManager;
 import com.winyeahs.fabric.clientrest.service.ChainBlockService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Map;
@@ -12,9 +14,12 @@ import java.util.Map;
  */
 @Service("chainBlockService")
 public class ChainBlockServiceImpl extends BaseServiceImpl implements ChainBlockService {
+    @Autowired
+    private FabricConfigMapper fabricConfigMapper;
+
     @Override
     public String queryBlockByTransactionID(String txID) {
-        SdkManager manager = SdkManager.getInstance();
+        SdkManager manager = SdkManager.getInstance(fabricConfigMapper);
         Map<String, String> resultMap;
         try {
             resultMap = manager.queryBlockByTransactionID(txID);
@@ -27,7 +32,7 @@ public class ChainBlockServiceImpl extends BaseServiceImpl implements ChainBlock
 
     @Override
     public String queryBlockByHash(byte[] blockHash) {
-        SdkManager manager = SdkManager.getInstance();
+        SdkManager manager = SdkManager.getInstance(fabricConfigMapper);
         Map<String, String> resultMap;
         try {
             resultMap = manager.queryBlockByHash(blockHash);
@@ -40,7 +45,7 @@ public class ChainBlockServiceImpl extends BaseServiceImpl implements ChainBlock
 
     @Override
     public String queryBlockByNumber(long blockNumber) {
-        SdkManager manager = SdkManager.getInstance();
+        SdkManager manager = SdkManager.getInstance(fabricConfigMapper);
         Map<String, String> resultMap;
         try {
             resultMap = manager.queryBlockByNumber(blockNumber);
@@ -53,7 +58,7 @@ public class ChainBlockServiceImpl extends BaseServiceImpl implements ChainBlock
 
     @Override
     public String queryCurrentBlockInfo() {
-        SdkManager manager = SdkManager.getInstance();
+        SdkManager manager = SdkManager.getInstance(fabricConfigMapper);
         Map<String, String> resultMap;
         try {
             resultMap = manager.queryCurrentBlockInfo();

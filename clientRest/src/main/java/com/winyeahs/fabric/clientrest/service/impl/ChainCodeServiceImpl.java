@@ -1,12 +1,17 @@
 package com.winyeahs.fabric.clientrest.service.impl;
 
+import com.winyeahs.fabric.clientrest.mapper.FabricConfigMapper;
+import com.winyeahs.fabric.clientrest.model.FabricConfigModel;
+import com.winyeahs.fabric.clientrest.model.FabricConfigOrdererModel;
 import com.winyeahs.fabric.clientrest.sdk.SdkManager;
 import com.winyeahs.fabric.clientrest.service.ChainCodeService;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
 import org.hyperledger.fabric.sdk.exception.ProposalException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.io.UnsupportedEncodingException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -17,9 +22,12 @@ import java.util.concurrent.TimeoutException;
 @Service("chainCodeService")
 public class ChainCodeServiceImpl extends BaseServiceImpl implements ChainCodeService {
 
+    @Autowired
+    private FabricConfigMapper fabricConfigMapper;
+
     @Override
     public String chainCodeInstall() {
-        SdkManager manager = SdkManager.getInstance();
+        SdkManager manager = SdkManager.getInstance(fabricConfigMapper);
         Map<String, String> resultMap;
         try {
             resultMap = manager.chainCodeInstall();
@@ -36,7 +44,7 @@ public class ChainCodeServiceImpl extends BaseServiceImpl implements ChainCodeSe
 
     @Override
     public String chainCodeInstantiate(String[] args) {
-        SdkManager manager = SdkManager.getInstance();
+        SdkManager manager = SdkManager.getInstance(fabricConfigMapper);
         Map<String, String> resultMap;
         try {
             resultMap = manager.chainCodeInstantiate(args);
@@ -53,7 +61,7 @@ public class ChainCodeServiceImpl extends BaseServiceImpl implements ChainCodeSe
 
     @Override
     public String chainCodeUpgrade(String[] args) {
-        SdkManager manager = SdkManager.getInstance();
+        SdkManager manager = SdkManager.getInstance(fabricConfigMapper);
         Map<String, String> resultMap;
         try {
             resultMap = manager.chainCodeUpgrade(args);
@@ -69,7 +77,7 @@ public class ChainCodeServiceImpl extends BaseServiceImpl implements ChainCodeSe
     }
     @Override
     public String chainCodeInvoke(String fcn, String[] args) {
-        SdkManager manager = SdkManager.getInstance();
+        SdkManager manager = SdkManager.getInstance(fabricConfigMapper);
         Map<String, String> resultMap;
         try {
             resultMap = manager.chainCodeInvoke(fcn, args);
@@ -86,7 +94,7 @@ public class ChainCodeServiceImpl extends BaseServiceImpl implements ChainCodeSe
 
     @Override
     public String chainCodeQuery(String fcn, String[] args) {
-        SdkManager manager = SdkManager.getInstance();
+        SdkManager manager = SdkManager.getInstance(fabricConfigMapper);
         Map<String, String> resultMap;
         try {
             resultMap = manager.chainCodeQuery(fcn, args);

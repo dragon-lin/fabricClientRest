@@ -1,0 +1,63 @@
+/* CSS Document */
+/*公共样式*/
+*{
+    -webkit-box-sizing: border-box;
+    -moz-box-sizing: border-box;
+    box-sizing: border-box;}
+html {
+    overflow-x:hidden;
+    overflo-y:auto;
+}
+html, body, div, img, a, ul, ol, li, dl, dt, dd, p, span, input, cite, h1, h2, h3, h4, h5, h6, form, table, tr, td, textarea, i, button, em {
+    margin:0;
+    padding:0;
+    border:0;
+}
+html {
+    -webkit-text-size-adjust:none;
+}
+body {
+    position:relative;
+    font-size:12px;
+    font-family:Microsoft yahei;
+    width: 100%;
+    overflow: hidden;
+}
+a {
+    text-decoration:none;
+    outline:none;
+    -webkit-tap-highlight-color: rgba(0,0,0,0);
+}
+a:active {
+    text-decoration:none;
+    outline:none;
+    background:none;
+}
+:focus {
+    outline:0;
+}
+cite, em, i {
+    font-style:normal;
+}
+li {
+    list-style:none;
+}
+h1, h2, h3, h4, h5, h6 {
+    font-weight:normal;
+}
+h3, .h3 {
+    font-size: 24px;
+}
+h4, .h4 {
+    font-size: 18px;
+}
+h5, .h5 {
+    font-size: 14px;
+}
+button{
+    cursor: pointer;}
+label{
+    margin: 0px;}
+table{
+    font-size: 12px;
+}

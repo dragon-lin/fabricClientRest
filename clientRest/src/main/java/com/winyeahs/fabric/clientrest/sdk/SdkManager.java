@@ -1,11 +1,17 @@
 package com.winyeahs.fabric.clientrest.sdk;
 
+import com.winyeahs.fabric.clientrest.mapper.FabricConfigMapper;
+import com.winyeahs.fabric.clientrest.model.FabricConfigModel;
+import com.winyeahs.fabric.clientrest.model.FabricConfigOrdererModel;
+import com.winyeahs.fabric.clientrest.model.FabricConfigPeerModel;
 import com.winyeahs.fabric.sdkinterface.SdkInterfaceOrg;
 import org.hyperledger.fabric.sdk.exception.*;
+import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
@@ -16,16 +22,18 @@ import java.util.concurrent.TimeoutException;
 public class SdkManager {
 
     private SdkInterfaceOrg sdkInterfaceOrg;
+    private FabricConfigMapper fabricConfigMapper;
 
     private static SdkManager instance;
-    public static synchronized SdkManager getInstance() {
+    public static synchronized SdkManager getInstance(FabricConfigMapper fabricConfigMapper) {
         if (null == instance) {
-            instance = new SdkManager();
+            instance = new SdkManager(fabricConfigMapper);
         }
         return instance;
     }
-    private SdkManager() {
+    private SdkManager(FabricConfigMapper fabricConfigMapper) {
         this.sdkInterfaceOrg = new SdkInterfaceOrg();
+        this.fabricConfigMapper = fabricConfigMapper;
         //从数据库中读取配置并设置
         this.setOrgCfgFromDb();
     }
@@ -34,6 +42,36 @@ public class SdkManager {
      * 从数据库中读取配置并设置
      */
     private void setOrgCfgFromDb() {
+        List<FabricConfigModel> configList =  this.fabricConfigMapper.queryFabricConfig("");
+        if (configList != null && configList.size() > 0){
+            FabricConfigModel configData = configList.get(0);
+            List<FabricConfigOrdererModel> configOrdererList = fabricConfigMapper.queryFabricOrderer(configData.getRow_id());
+            List<FabricConfigPeerModel> configPeerList = fabricConfigMapper.queryFabricPeer(configData.getRow_id());
+
+            this.sdkInterfaceOrg.setOrgName(configData.getOrg_name());
+            this.sdkInterfaceOrg.setUsername(configData.getUser_name());
+            this.sdkInterfaceOrg.setCryptoConfigPath(configData.getCryptoconfig_path());
+            this.sdkInterfaceOrg.setChannelArtifactsPath(configData.getChannelartifacts_path());
+            this.sdkInterfaceOrg.setOrgMSPID(configData.getOrg_mspid());
+            this.sdkInterfaceOrg.setOrgDomain(configData.getOrg_domain());
+            for (int i = 0; i < configPeerList.size(); i++) {
+                this.sdkInterfaceOrg.addPeer(configPeerList.get(i).getPeer_name(), configPeerList.get(i).getPeer_eventhubname(), configPeerList.get(i).getPeer_location(), configPeerList.get(i).getPeer_eventhublocation(), configPeerList.get(i).getIs_eventlistener());
+            }
+            this.sdkInterfaceOrg.setOrdererDomain(configData.getOrderer_domain());
+            for (int i = 0; i < configOrdererList.size(); i++) {
+                this.sdkInterfaceOrg.addOrderer(configOrdererList.get(i).getOrderer_name(), configOrdererList.get(i).getOrderer_location());
+            }
+            this.sdkInterfaceOrg.setChannel(configData.getChannel_name());
+            this.sdkInterfaceOrg.setChaincode(configData.getChaincode_name(), configData.getChaincode_source(), configData.getChaincode_path(), configData.getChaincode_policy(), configData.getChaincode_version(), configData.getProposal_waittime(), configData.getInvoke_waittime());
+            this.sdkInterfaceOrg.setOpenTLS(configData.getIs_tls());
+            this.sdkInterfaceOrg.setOpenCATLS(configData.getIs_catls());
+            try {
+                this.sdkInterfaceOrg.init();
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
+        /*
         //从数据库中读取配置 TODO
         this.sdkInterfaceOrg.setOrgName("Org1");
         this.sdkInterfaceOrg.setUsername("Admin");
@@ -73,6 +111,7 @@ public class SdkManager {
         } catch (IOException e) {
             e.printStackTrace();
         }
+        */
     }
 
     public String DemoMethod() {

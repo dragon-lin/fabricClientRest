@@ -1,0 +1,117 @@
+.app-container-fluid{
+    padding: 0px;
+}
+.app-sidebar{
+    position: fixed;
+    top:0;
+    left:0;
+    width: 180px;
+    height: 100%;
+    background-color: #34495e;
+}
+.userinfo{
+    height: 60px;
+    background-color: #2dcc70;
+    display: flex;
+    align-items: center;
+    align-content: center;
+    justify-content: center;
+}
+.userinfo .avatarUrl{
+    width: 40px;
+    height: 40px;
+    vertical-align: middle;
+    margin-right: 15px;
+}
+.userinfo .nikename{
+    font-size: 14px;
+    color: #fff;
+    display: block;
+    width: 60px;
+}
+.navbar{
+    border-radius: 0px;
+    margin: 0px;
+}
+.navbar ul li{
+    height: 40px;
+}
+
+.navbar ul li.cspz{
+    background: url("../images/nav-icon-01.png") no-repeat 30px center;
+    background-size: 20px;
+}
+.navbar ul li.cspz:hover,
+.navbar ul li.cspz.active{
+    background: url("../images/nav-icon-active-01.png") no-repeat 30px center;
+    background-size: 20px;
+}
+.navbar ul li.xtts{
+    background: url("../images/nav-icon-02.png") no-repeat 30px center;
+    background-size: 20px;
+}
+.navbar ul li.xtts:hover,
+.navbar ul li.xtts.active{
+    background: url("../images/nav-icon-active-02.png") no-repeat 30px center;
+    background-size: 20px;
+}
+.navbar ul li.xgmm{
+    background: url("../images/nav-icon-03.png") no-repeat 30px center;
+    background-size: 20px;
+}
+.navbar ul li.xgmm:hover,
+.navbar ul li.xgmm.active{
+    background: url("../images/nav-icon-active-03.png") no-repeat 30px center;
+    background-size: 20px;
+}
+.navbar ul li.active {
+    background-color: #233342;
+}
+.navbar ul li a{
+    display: block;
+    height: 40px;
+    line-height: 40px;
+}
+.navbar ul li a p{
+    color: #8da1a9;
+    padding-left: 60px;
+}
+.navbar ul li.active a p,
+.navbar ul li:hover a p{
+    color: #fff;
+}
+.app-container{
+    margin-left: 180px;
+}
+.app-header{
+    position: relative;
+    height:61px;
+    display: flex;
+    justify-content: center;
+    align-content: center;
+    align-items: center;
+    border-bottom: 1px solid #ccc;
+}
+.app-header .logo{
+    font-size: 32px;
+    text-transform: uppercase;
+    color: #2dcc70;
+    font-weight: bold;
+}
+.app-container .app-content{
+    padding: 15px 0;
+}
+.app-content ul{
+    margin: 0px;
+}
+.app-content ul li.col-xs-6.form-group{
+    padding: 0px;
+    min-height:34px;
+}
+.btn-group{
+    padding: 15px 0;
+}
+.row.btn-group.div-block{
+    display: block;
+    margin: 0 auto;
+}
