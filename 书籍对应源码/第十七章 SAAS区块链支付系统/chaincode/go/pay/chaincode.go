@@ -7,8 +7,9 @@ SPDX-License-Identifier: Apache-2.0
 package main
 
 import (
+    "bytes"
+    "encoding/json"
 	"fmt"
-	"strconv"
 
 	"github.com/hyperledger/fabric/core/chaincode/shim"
 	pb "github.com/hyperledger/fabric/protos/peer"
@@ -18,7 +19,7 @@ type PayChaincode struct {
 }
 
 type Pay struct {
-   UserId      int    `json:"user_id"` //用户id
+   UserId      string `json:"user_id"` //用户id
    OrderId     string `json:"order_id"` //订单id
    PayTransID  string `json:"pay_trans_id"` //支付平台交易id
    BuyProduct  string `json:"buy_product"` //购买产品
@@ -61,11 +62,11 @@ func (t *PayChaincode) invoke(stub shim.ChaincodeStubInterface, args []string) p
 
 	pay := &Pay{userId, orderId, payTransId, buyProduct, transAmount, transTime}
 	payJSONBytes, err := json.Marshal(pay)
-	if err := nil {
+	if err != nil {
 		return shim.Error(err.Error())
 	}
 	
-	err = stub.PutState(userId, payJSONBytes)
+	err = stub.PutState(orderId, payJSONBytes)
 	if err != nil {
 		return shim.Error(err.Error())
 	}
@@ -83,7 +84,7 @@ func (t *PayChaincode) query(stub shim.ChaincodeStubInterface, args []string) pb
 
 	userId = args[0]
 
-    queryString := fmt.Sprintf("{\"selector\":{\"userId\":\"%s\"}}", userId)
+    queryString := fmt.Sprintf("{\"selector\":{\"user_id\":\"%s\"}}", userId)
 
 	queryResults, err := getQueryResultForQueryString(stub, queryString)
 	if err != nil {
