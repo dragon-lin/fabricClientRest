@@ -70,7 +70,7 @@ public class ChainBlockController {
      * 查询当前区块信息
      * @return
      */
-    @RequestMapping(value = "/queryBlockchainInfo", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
+    @RequestMapping(value = "/queryCurrentBlockInfo", method = RequestMethod.POST, produces = "application/json; charset=UTF-8")
     @ResponseBody
     public String queryCurrentBlockInfo() {
         return chainBlockService.queryCurrentBlockInfo();

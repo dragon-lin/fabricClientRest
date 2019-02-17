@@ -15,16 +15,22 @@
     <link type="text/css" rel="stylesheet" href="./css/style.css">
     <script type="text/javascript" src="./js/jquery-3.3.1.min.js"></script>
     <script type="text/javascript" src="./lib/bootstrap/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="./lib/blockUI/jquery.blockUI.js"></script>
 </head>
 <body>
 
 <h3 th:text="登录成功"></h3>
 <div class="container-fluid app-container-fluid">
-    <div class="app-sidebar">
+    <div class="app-header">
+        <input type="hidden" value="${user.account}" id="account" />
+        <div class="logo">HyperLedger Fabric SDK配置</div>
         <div class="userinfo">
             <img class="avatarUrl" src="../images/avatarUrl.png"><span class="nikename">${user.name}</span>
+            <button class="logout-btn" id="logout"></button>
         </div>
-        <div class="navbar">
+    </div>
+    <div class="app-sidebar">
+        <div id="navbar" class="navbar">
             <ul>
                 <li class="cspz active">
                     <a href="#">
@@ -33,7 +39,7 @@
                 </li>
                 <li class="xtts">
                     <a href="#">
-                        <p>系统调试</p>
+                        <p>系统操作</p>
                     </a>
                 </li>
                 <li class="xgmm">
@@ -45,10 +51,7 @@
         </div>
     </div>
     <div class="app-container">
-        <div class="app-header">
-            <div class="logo">tinms</div>
-        </div>
-        <div class="app-content">
+        <div class="app-content" id="paramConfig">
             <input type="hidden" id="rowId" value="${config.row_id}">
             <input type="hidden" id="leagueId" value="1">
             <ul class="row">
@@ -107,7 +110,7 @@
                     </div>
                 </li>
                 <li class="col-xs-6 form-group">
-                    <label class="col-sm-3 control-label">智能合约源码(ChaincodeSource)</label>
+                    <label class="col-sm-3 control-label">智能合约源路径(ChaincodeSource)</label>
                     <div class="col-sm-9">
                         <input type="text" id="chaincodeSource" class="form-control" placeholder="" value="${config.chaincode_source}">
                     </div>
@@ -145,29 +148,34 @@
                 <li class="col-xs-6 form-group">
                     <label class="col-sm-3 control-label">开启TLS(IsTls)</label>
                     <div class="col-sm-9">
-                        <input type="radio" name="isTls" value="1" ${config.is_tls ? 'checked' :''}>是
-                        <input type="radio" name="isTls" value="0" ${!config.is_tls ? 'checked' :''}>否
+                        <label class="isTls">
+                            <input type="radio" name="isTls" value="1" ${config.is_tls ? 'checked' :''}>是
+                        </label>
+                        <label class="isTls">
+                            <input type="radio" name="isTls" value="0" ${!config.is_tls ? 'checked' :''}>否
+                        </label>
                     </div>
                 </li>
                 <li class="col-xs-6 form-group">
                     <label class="col-sm-3 control-label">开启CA TLS(IsCatls)</label>
                     <div class="col-sm-9">
-                        <input type="radio" name="isCatls" value="1" ${config.is_catls ? 'checked' :''}>是
-                        <input type="radio" name="isCatls" value="0" ${!config.is_catls ? 'checked' :''}>否
+                        <label class="isCatls">
+                            <input type="radio" name="isCatls" value="1" ${config.is_catls ? 'checked' :''}>是
+                        </label>
+                        <label class="isCatls">
+                            <input type="radio" name="isCatls" value="0" ${!config.is_catls ? 'checked' :''}>否
+                        </label>
                     </div>
                 </li>
             </ul>
 
-            <div class="row btn-group div-block">
-                <p class="col-xs-12">
-                    <input id="save" name="save" type="button" class="btn btn-info btn-sm" value="保存" />
-                </p>
-            </div>
             <ul class="row">
                 <li class="col-xs-12">
                     <div class="table">
                         <table id="ordererList" class="table table-bordered">
-                            <caption>orderer:</caption>
+                            <caption>排序（orderer）:
+                                <button id="add-order-btn" type="button" class="add-btn">新增</button>
+                            </caption>
                             <thead>
                             <tr>
                                 <th>排序名称</br>(ordererName)</th>
@@ -178,11 +186,11 @@
                             <tbody>
                             <c:forEach items="${configOrdererList}" var="item">
                                 <tr configId="${item.config_id}">
-                                    <td>${item.orderer_name}</td>
-                                    <td>${item.orderer_location}</td>
+                                    <td class="orderer_name">${item.orderer_name}</td>
+                                    <td class="orderer_location">${item.orderer_location}</td>
                                     <td>
-                                        <input class="btn btn-primary btn-xs" type="button" data-toggle="modal" data-target="#myOrdererModal" value="编辑">
-                                        <input class="btn btn-danger btn-xs" type="button" value="删除">
+                                        <input class="btn btn-primary btn-xs modify-btn" type="button" value="编辑">
+                                        <input class="btn btn-danger btn-xs delete-btn" type="button" value="删除">
                                     </td>
                                 </tr>
                             </c:forEach>
@@ -194,7 +202,9 @@
                 <li class="col-xs-12">
                     <div class="table">
                         <table id="peerList" class="table table-bordered">
-                            <caption>peer:</caption>
+                            <caption>节点（peer）:
+                                <button id="add-peer-btn"  type="button" class="add-btn">新增</button>
+                            </caption>
                             <thead>
                             <tr>
                                 <th>节点名称</br>(peerName)</th>
@@ -208,20 +218,80 @@
                             <tbody>
                             <c:forEach items="${configPeerList}" var="item">
                                 <tr configId="${item.config_id}">
-                                    <td>${item.peer_name}</td>
-                                    <td>${item.peer_eventhubname}</td>
-                                    <td>${item.peer_location}</td>
-                                    <td>${item.peer_eventhublocation}</td>
-                                    <td value="${item.is_eventlistener}">${item.is_eventlistener ? '是' :'否'}</td>
+                                    <td class="peer_name">${item.peer_name}</td>
+                                    <td class="peer_eventhubname">${item.peer_eventhubname}</td>
+                                    <td class="peer_location">${item.peer_location}</td>
+                                    <td class="peer_eventhublocation">${item.peer_eventhublocation}</td>
+                                    <td class="is_eventlistener" value="${item.is_eventlistener}">${item.is_eventlistener ? '是' :'否'}</td>
                                     <td>
-                                        <input class="btn btn-primary btn-xs" type="button" data-toggle="modal" data-target="#myPeerModal" value="编辑">
-                                        <input class="btn btn-danger btn-xs" type="button" value="删除">
+                                        <input class="btn btn-primary btn-xs modify-btn" type="button" value="编辑">
+                                        <input class="btn btn-danger btn-xs delete-btn" type="button" value="删除">
                                     </td>
                                 </tr>
                             </c:forEach>
                             </tbody>
                         </table>
                     </div>
+                </li>
+            </ul>
+            <div class="btn-group">
+                <input id="save" name="save" type="button" class="btn btn-info btn-sm save-btn" value="保存" />
+            </div>
+        </div>
+        <div id="systemOp" class="app-content" style="display: none;">
+            <ul class="row" style="margin-bottom: 0px;">
+                <li class="col-xs-12 form-group">
+                    <div class="button-type-group" id="functionOp" >
+                        <p>
+                            <button class="btn-type active" id="createChannel">创建通道</button>
+                            <button class="btn-type" id="joinPeer">加入通道</button>
+                        </p>
+                        <p>
+                            <button class="btn-type" id="install">安装智能合约</button>
+                            <button class="btn-type" id="instantiate">实例化智能合约</button>
+                            <button class="btn-type" id="upgrade">升级智能合约</button>
+                            <button class="btn-type" id="invoke">执行智能合约</button>
+                            <button class="btn-type" id="query">查询智能合约</button>
+                        </p>
+                        <p>
+                            <button class="btn-type" id="queryBlockByTransactionID">根据交易Id查询区块数据</button>
+                            <button class="btn-type" id="queryBlockByHash">根据哈希值查询区块数据</button>
+                            <button class="btn-type" id="queryBlockByNumber">根据区块高度查询区块数据</button>
+                            <button class="btn-type" id="queryCurrentBlockInfo">查询当前区块信息</button>
+                        </p>
+                    </div>
+                </li>
+                <li class="col-xs-12 form-group" id="regionRequest" style="display: none">
+                    <label class="col-sm-3 control-label">请求：</label>
+                    <textarea id="dataRequest"></textarea>
+                </li>
+                <li class="col-xs-12 form-group">
+                    <button id="run">执&nbsp;&nbsp;行</button>
+                    <img id="loading" src="../images/loading.gif" style="display: none;margin-left:10px;" height="9px" width="100px">
+                </li>
+                <li class="col-xs-12 form-group">
+                    <label class="col-sm-3 control-label">回应：</label>
+                    <textarea id="dataResponse"></textarea>
+                </li>
+            </ul>
+        </div>
+
+        <div id="systemPw" class="app-content" style="display: none;">
+            <ul class="row" style="margin-bottom: 0px;">
+                <li class="col-xs-12 form-group">
+                    <label class="col-sm-3 control-label">新密码：</label>
+                    <div class="col-sm-9">
+                        <input type="password" id="password" class="form-control" placeholder="" value="">
+                    </div>
+                </li>
+                <li class="col-xs-12 form-group">
+                    <label class="col-sm-3 control-label">新密码确认：</label>
+                    <div class="col-sm-9">
+                        <input type="password" id="passwordC" class="form-control" placeholder="" value="">
+                    </div>
+                </li>
+                <li class="col-xs-12 form-group">
+                    <input id="modify-pw" name="modify-pw" style="margin-left: 94px;" type="button" class="btn btn-info btn-sm save-btn" value="保存" />
                 </li>
             </ul>
         </div>
@@ -251,8 +321,9 @@
                 </ul>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-danger" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-danger">保存</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
+                <button type="button" class="btn btn-primary" id="save-orderer">保存</button>
+                <button type="button" class="btn btn-primary" id="modify-orderer">保存</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
@@ -301,7 +372,8 @@
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">取消</button>
-                <button type="button" class="btn btn-primary">保存</button>
+                <button type="button" class="btn btn-primary"  id="save-peer">保存</button>
+                <button type="button" class="btn btn-primary" id="modify-peer">保存</button>
             </div>
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->

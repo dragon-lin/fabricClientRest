@@ -16,4 +16,11 @@ public interface UserMapper {
      * @return
      */
     public UserModel getUser(@Param("account") String account, @Param("password") String password);
+
+    /**
+     * 修改密码
+     * @param password 密码
+     * @return
+     */
+    public int modifyPassword(@Param("accout") String accout, @Param("password") String password);
 }

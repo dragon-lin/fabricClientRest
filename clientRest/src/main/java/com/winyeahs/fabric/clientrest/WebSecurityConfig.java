@@ -51,6 +51,7 @@ public class WebSecurityConfig implements WebMvcConfigurer {
         addInterceptor.excludePathPatterns("/logon**");
         addInterceptor.excludePathPatterns("/chaincode/**");
         addInterceptor.excludePathPatterns("/chainblock/**");
+        addInterceptor.excludePathPatterns("/chainchannel/**");
         addInterceptor.excludePathPatterns("/images/**");
         addInterceptor.excludePathPatterns("/css/**");
         addInterceptor.excludePathPatterns("/lib/**");

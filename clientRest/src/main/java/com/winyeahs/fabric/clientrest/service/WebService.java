@@ -1,5 +1,6 @@
 package com.winyeahs.fabric.clientrest.service;
 
+import com.alibaba.fastjson.JSONObject;
 import com.winyeahs.fabric.clientrest.model.UserModel;
 
 /**
@@ -7,4 +8,6 @@ import com.winyeahs.fabric.clientrest.model.UserModel;
  */
 public interface WebService {
     UserModel getUser(String account, String password);
+    int save(JSONObject json);
+    int modifyPassword(String account, String password);
 }

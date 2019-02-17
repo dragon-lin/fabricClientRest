@@ -86,6 +86,14 @@ public class WebController {
     @ResponseBody
     public String save(@RequestParam Map<String, Object> map) {
         JSONObject jsonObjectResult = new JSONObject();
+        JSONObject jsonMap = new JSONObject(map);
+        JSONObject json =  jsonMap.getJSONObject("jsonParam");
+        int result = webService.save(json);
+        jsonObjectResult.put("result", result);
+        return jsonObjectResult.toString();
+
+        /*
+        JSONObject jsonObjectResult = new JSONObject();
         int result = -1;
         int configId = 0;
         JSONObject jsonMap = new JSONObject(map);
@@ -147,6 +155,21 @@ public class WebController {
             //保存peer
             this.fabricConfigMapper.addFabricPeer(fabricConfigPeer);
         }
+        if (result > 0){
+
+        }
+        jsonObjectResult.put("result", result);
+        return jsonObjectResult.toString();
+        */
+    }
+    @RequestMapping(value = "/modifypassword")
+    @ResponseBody
+    public String modifyPassword(@RequestParam Map<String, Object> map) {
+        JSONObject jsonObjectResult = new JSONObject();
+        JSONObject jsonMap = new JSONObject(map);
+        String account = jsonMap.getString("account");
+        String password = jsonMap.getString("password");
+        int result = webService.modifyPassword(account, password);
         jsonObjectResult.put("result", result);
         return jsonObjectResult.toString();
     }

@@ -38,7 +38,7 @@ public class ChainCodeServiceImpl extends BaseServiceImpl implements ChainCodeSe
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return super.responseFail(String.format("请求失败： %s", e.getMessage()));
+            return super.responseFail(String.format("请求失败:%s", e.getMessage()));
         }
     }
 
@@ -55,7 +55,7 @@ public class ChainCodeServiceImpl extends BaseServiceImpl implements ChainCodeSe
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return super.responseFail(String.format("请求失败： %s", e.getMessage()));
+            return super.responseFail(String.format("请求失败:%s", e.getMessage()));
         }
     }
 
@@ -72,7 +72,7 @@ public class ChainCodeServiceImpl extends BaseServiceImpl implements ChainCodeSe
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return super.responseFail(String.format("请求失败： %s", e.getMessage()));
+            return super.responseFail(String.format("请求失败:%s", e.getMessage()));
         }
     }
     @Override
@@ -88,7 +88,7 @@ public class ChainCodeServiceImpl extends BaseServiceImpl implements ChainCodeSe
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return super.responseFail(String.format("请求失败： %s", e.getMessage()));
+            return super.responseFail(String.format("请求失败:%s", e.getMessage()));
         }
     }
 
@@ -105,7 +105,7 @@ public class ChainCodeServiceImpl extends BaseServiceImpl implements ChainCodeSe
             }
         } catch (Exception e) {
             e.printStackTrace();
-            return super.responseFail(String.format("请求失败： %s", e.getMessage()));
+            return super.responseFail(String.format("请求失败:%s", e.getMessage()));
         }
     }
 }

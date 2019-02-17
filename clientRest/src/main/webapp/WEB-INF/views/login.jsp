@@ -18,21 +18,17 @@
     <h1>HyperLedger Fabric SDK配置</h1>
     <div class="form-container">
         <form class="form-horizontal" name="form" accept-charset="utf-8"  action="/logon" method="post">
-            <div class="form-group">
-                <label for="account" class="col-sm-3 control-label">用户名：</label>
-                <div class="col-sm-9">
-                    <input type="text" class="form-control" id="account" name="account"/>
-                </div>
+            <div class="form-group account-box">
+                <img class="icon account-icon" src="./images/account-icon.png"/>
+                <input type="text" class="form-control" id="account" name="account" placeholder="用户名" autocomplete="off"/>
+            </div>
+            <div class="form-group password-box">
+                <img class="icon password-icon" src="./images/password-icon.png"/>
+                <input type="password" class="form-control" id="password"  name="password" placeholder="密码" autocomplete="off"/>
             </div>
             <div class="form-group">
-                <label for="password" class="col-sm-3 control-label">密码：</label>
-                <div class="col-sm-9">
-                    <input type="password" class="form-control" id="password"  name="password"/>
-                </div>
-            </div>
-            <div class="form-group">
-                <div class="submit-box col-xs-12">
-                    <button type="submit" class="btn btn-primary submit-btn">登录</button>
+                <div class="submit-box">
+                    <button type="submit" class="submit-btn">登&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;录</button>
                 </div>
             </div>
         </form>

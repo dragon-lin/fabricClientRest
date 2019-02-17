@@ -26,7 +26,7 @@ public class ChainBlockServiceImpl extends BaseServiceImpl implements ChainBlock
             return super.responseSuccess(JSONObject.parseObject(resultMap.get("data")));
         } catch (Exception e) {
             e.printStackTrace();
-            return super.responseFail(String.format("请求失败： %s", e.getMessage()));
+            return super.responseFail(String.format("请求失败:%s", e.getMessage()));
         }
     }
 
@@ -39,7 +39,7 @@ public class ChainBlockServiceImpl extends BaseServiceImpl implements ChainBlock
             return super.responseSuccess(JSONObject.parseObject(resultMap.get("data")));
         } catch (Exception e) {
             e.printStackTrace();
-            return super.responseFail(String.format("请求失败： %s", e.getMessage()));
+            return super.responseFail(String.format("请求失败:%s", e.getMessage()));
         }
     }
 
@@ -52,7 +52,7 @@ public class ChainBlockServiceImpl extends BaseServiceImpl implements ChainBlock
             return super.responseSuccess(JSONObject.parseObject(resultMap.get("data")));
         } catch (Exception e) {
             e.printStackTrace();
-            return super.responseFail(String.format("请求失败： %s", e.getMessage()));
+            return super.responseFail(String.format("请求失败:%s", e.getMessage()));
         }
     }
 
@@ -65,7 +65,7 @@ public class ChainBlockServiceImpl extends BaseServiceImpl implements ChainBlock
             return super.responseSuccess(JSONObject.parseObject(resultMap.get("data")));
         } catch (Exception e) {
             e.printStackTrace();
-            return super.responseFail(String.format("请求失败： %s", e.getMessage()));
+            return super.responseFail(String.format("请求失败:%s", e.getMessage()));
         }
     }
 }

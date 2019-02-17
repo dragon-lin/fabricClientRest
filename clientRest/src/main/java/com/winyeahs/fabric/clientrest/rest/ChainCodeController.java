@@ -40,7 +40,7 @@ public class ChainCodeController {
     @ResponseBody
     public String chainCodeInstantiate(@RequestBody Map<String, Object> map) {
         JSONObject json = new JSONObject(map);
-        JSONArray arrayJson = json.getJSONArray("array");
+        JSONArray arrayJson = json.getJSONArray("args");
         int length = arrayJson.size();
         String[] argArray = new String[length];
         for (int i = 0; i < length; i++) {
@@ -58,7 +58,7 @@ public class ChainCodeController {
     @ResponseBody
     public String chainCodeUpgrade(@RequestBody Map<String, Object> map) {
         JSONObject json = new JSONObject(map);
-        JSONArray arrayJson = json.getJSONArray("array");
+        JSONArray arrayJson = json.getJSONArray("args");
         int length = arrayJson.size();
         String[] argArray = new String[length];
         for (int i = 0; i < length; i++) {
@@ -77,7 +77,7 @@ public class ChainCodeController {
     public String chainCodeInvoke(@RequestBody Map<String, Object> map) {
         JSONObject json = new JSONObject(map);
         String fcn = json.getString("fcn");
-        JSONArray arrayJson = json.getJSONArray("array");
+        JSONArray arrayJson = json.getJSONArray("args");
         int length = arrayJson.size();
         String[] argArray = new String[length];
         for (int i = 0; i < length; i++) {
@@ -96,7 +96,7 @@ public class ChainCodeController {
     public String chainCodeQuery(@RequestBody Map<String, Object> map) {
         JSONObject json = new JSONObject(map);
         String fcn = json.getString("fcn");
-        JSONArray arrayJson = json.getJSONArray("array");
+        JSONArray arrayJson = json.getJSONArray("args");
         int length = arrayJson.size();
         String[] argArray = new String[length];
         for (int i = 0; i < length; i++) {

@@ -9,4 +9,11 @@
         SELECT *  FROM fabric_user WHERE account=#{account} AND password=#{password}
     </select>
 
+    <update id="modifyPassword">
+        UPDATE fabric_user
+        <set>
+            <if test="password != null and password != ''">password=#{password}</if>
+        </set>
+        WHERE account=#{accout}
+    </update>
 </mapper>

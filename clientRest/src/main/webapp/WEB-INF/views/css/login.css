@@ -7,19 +7,21 @@
     align-content: center;
     height: 100%;
     background: url("../images/login-bg.jpg") no-repeat center center;
-    background-size: 100% auto;
+    background-size: 100% 100%;
 }
 .login-container h1{
-    font-size: 40px;
+    font-size: 56px;
+    height: 56px;
     font-weight: bold;
     margin-bottom: 50px;
+    color: #fff;
 }
 .form-container{
     padding: 30px 30px;
-    border:1px solid #ccc;
-    background-color: #fff;
+    border:1px solid #134fa8;
+    background-color: rgba(0,0,0,0.2);
     border-radius: 4px;
-    width: 300px;
+    width: 525px;
 }
 .control-label{
     text-align: right;
@@ -30,5 +32,62 @@
     text-align: center;
 }
 .submit-btn{
-    width: 100px;
+    width: 345px;
+    height: 50px;
+    border-radius: 25px;
+    color: #fff;
+    background-color: #42b22c;
+    border-color: #42b22c;
+    font-size: 14px;
+}
+.btn:hover, .btn:focus, .btn.focus{
+    color: #fff;
+}
+#account,#password{
+    position: relative;
+    top:9px;
+    height: 32px;
+    padding: 0 10px;
+    background-color: #0a62d5!important;
+    border: 0;
+    color: #fff;
+}
+.account-box,.password-box{
+    color: #fff!important;
+    height: 50px;
+    border-radius: 25px;
+    background-color: #0a62d5!important;
+    padding: 0 30px 0 60px;
+    width: 345px;
+    margin: 0 auto;
+    border-color: #0a62d5;
+    overflow: hidden;
+
+}
+.form-container .form-group{
+    position: relative;
+    width: 345px;
+    margin: 0 auto 15px;
+}
+.form-container .form-group .icon{
+    position: absolute;
+    top:0;
+    left:10px;
+    z-index: 1;
+}
+#account::-webkit-input-placeholder,
+#password::-webkit-input-placeholder{ /* WebKit, Blink, Edge */
+    color: #fdffff;
+}
+#account:-moz-placeholder,
+#password:-moz-placeholder { /* Mozilla Firefox 4 to 18 */
+    color: #fdffff;
+}
+#account::-moz-placeholder,
+#password::-moz-placeholder { /* Mozilla Firefox 19+ */
+    color: #fdffff;
+}
+#account:-ms-input-placeholder,
+#password:-ms-input-placeholder { /* Internet Explorer 10-11 */
+    color: #fdffff;
 }
