@@ -265,8 +265,8 @@
                     <label class="col-sm-3 control-label">请求：</label>
                     <textarea id="dataRequest"></textarea>
                 </li>
-                <li class="col-xs-12 form-group">
-                    <button id="run">执&nbsp;&nbsp;行</button>
+                <li class="col-xs-12 form-group " style="align-items: center;margin-bottom: 20px">
+                    <button id="run" style="margin-bottom: 0px">执&nbsp;&nbsp;行</button>
                     <img id="loading" src="../images/loading.gif" style="display: none;margin-left:10px;" height="9px" width="100px">
                 </li>
                 <li class="col-xs-12 form-group">
