@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/clientRest/clientRest.iml" filepath="$PROJECT_DIR$/clientRest/clientRest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/fabricClientRest.iml" filepath="$PROJECT_DIR$/fabricClientRest.iml" />
+      <module fileurl="file://$PROJECT_DIR$/sdkInterface/sdkInterface.iml" filepath="$PROJECT_DIR$/sdkInterface/sdkInterface.iml" />
+    </modules>
+  </component>
+</project>
