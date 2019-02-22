@@ -11,7 +11,6 @@ import com.winyeahs.fabric.clientrest.model.UserModel;
 import com.winyeahs.fabric.clientrest.sdk.SdkManager;
 import com.winyeahs.fabric.clientrest.service.WebService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.Md5PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.util.DigestUtils;
 
@@ -103,9 +102,7 @@ public class WebServiceImpl implements WebService{
      * @return
      */
     public int modifyPassword(String account, String password){
-        String newPassword = password;
-        Md5PasswordEncoder passwordEncoder = new Md5PasswordEncoder();
-        newPassword = passwordEncoder.encodePassword(newPassword, null);
-        return this.userMapper.modifyPassword(account, newPassword);
+        String md5Password = DigestUtils.md5DigestAsHex(password.getBytes());
+        return this.userMapper.modifyPassword(account, md5Password);
     }
 }
