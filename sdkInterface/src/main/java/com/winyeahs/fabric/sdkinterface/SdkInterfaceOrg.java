@@ -38,6 +38,7 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
 
     private static final Log log = LogFactory.getLog(SdkInterfaceOrg.class);
 
+    private boolean isInit = false;
     // 用户名
     private String username;
     // 用户密码
@@ -54,7 +55,7 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
     private String orgMSPID;
     // 组织所在根域名，如：org1.example.com
     private String orgDomain;
-    // peer 排序服务器数据
+    // peer 节点数据
     private List<SdkInterfacePeer> peers = new LinkedList<>();
 
     // 是否开启TLS
@@ -84,6 +85,10 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
     private HFClient client;
 
     private Map<String, User> userMap = new HashMap<>();
+
+    public SdkInterfaceOrg(){
+        this.channel = new SdkInterfaceChannel(this);
+    }
 
     public void setUsername(String username) {
         this.username = username;
@@ -158,8 +163,7 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
     }
 
     public void setChannel(String channelName){
-        SdkInterfaceChannel channel = new SdkInterfaceChannel(channelName, this);
-        this.channel = channel;
+        this.channel.setChannelName(channelName);
     }
 
     public SdkInterfaceChannel getChannel(){
@@ -293,7 +297,11 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
 
         this.client = HFClient.createNewInstance();
         this.client.setCryptoSuite(CryptoSuite.Factory.getCryptoSuite());
-        this.channel.setChannel(this.client);
+        this.channel.setHFClient(this.client);
+        this.isInit = true;
+    }
+    public boolean inited(){
+        return this.isInit;
     }
     /**
      * 自定义注册登记操作类
@@ -327,7 +335,8 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
      * 初始化智能合约
      * @return
      */
-    public Map<String, String> chainCodeInstall() throws ProposalException, InvalidArgumentException {
+    public Map<String, String> chainCodeInstall() throws ProposalException, InvalidArgumentException, TransactionException {
+        this.channel.initChannel();
         return this.chaincode.chainCodeInstall(this);
     }
     /**
@@ -335,7 +344,8 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
      * @param args 查询参数数组
      * @return
      */
-    public Map<String, String> chainCodeInstantiate(String[] args) throws InterruptedException, InvalidArgumentException, ExecutionException, ChaincodeEndorsementPolicyParseException, TimeoutException, ProposalException, IOException {
+    public Map<String, String> chainCodeInstantiate(String[] args) throws InterruptedException, InvalidArgumentException, ExecutionException, ChaincodeEndorsementPolicyParseException, TimeoutException, ProposalException, IOException, TransactionException {
+        this.channel.initChannel();
         return this.chaincode.chainCodeInstantiate(this, args);
     }
     /**
@@ -343,7 +353,8 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
      * @param args 查询参数数组
      * @return
      */
-    public Map<String, String> chainCodeUpgrade(String[] args) throws InterruptedException, InvalidArgumentException, ExecutionException, ChaincodeEndorsementPolicyParseException, TimeoutException, ProposalException, IOException {
+    public Map<String, String> chainCodeUpgrade(String[] args) throws InterruptedException, InvalidArgumentException, ExecutionException, ChaincodeEndorsementPolicyParseException, TimeoutException, ProposalException, IOException, TransactionException {
+        this.channel.initChannel();
         return this.chaincode.chainCodeUpgrade(this, args);
     }
     /**
@@ -351,7 +362,8 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
      * @param args 查询参数数组
      * @return
      */
-    public Map<String, String> chainCodeInvoke(String fcn, String[] args) throws InterruptedException, InvalidArgumentException, UnsupportedEncodingException, ExecutionException, TimeoutException, ProposalException {
+    public Map<String, String> chainCodeInvoke(String fcn, String[] args) throws InterruptedException, InvalidArgumentException, UnsupportedEncodingException, ExecutionException, TimeoutException, ProposalException, TransactionException {
+        this.channel.initChannel();
         return this.chaincode.chainCodeInvoke(this, fcn, args);
     }
 
@@ -360,7 +372,8 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
      * @param args 查询参数数组
      * @return
      */
-    public Map<String, String> chainCodeQuery(String fcn, String[] args) throws ProposalException, InvalidArgumentException {
+    public Map<String, String> chainCodeQuery(String fcn, String[] args) throws ProposalException, InvalidArgumentException, TransactionException {
+        this.channel.initChannel();
         return this.chaincode.chainCodeQuery(this, fcn, args);
     }
 
@@ -369,50 +382,49 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
      * @param txID 交易Id
      * @return
      */
-    public Map<String, String> queryBlockByTransactionID(String txID){
-        try {
-            return this.channel.queryBlockByTransactionID(txID);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    public Map<String, String> queryBlockByTransactionID(String txID) throws ProposalException, IOException, InvalidArgumentException, TransactionException {
+        this.channel.initChannel();
+        return this.channel.queryBlockByTransactionID(txID);
     }
     /**
      * 根据哈希值查询区块数据
      * @param blockHash 交易Id
      * @return
      */
-    public Map<String, String> queryBlockByHash(byte[] blockHash){
-        try {
-            return this.channel.queryBlockByHash(blockHash);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    public Map<String, String> queryBlockByHash(byte[] blockHash) throws ProposalException, IOException, InvalidArgumentException, TransactionException {
+        this.channel.initChannel();
+        return this.channel.queryBlockByHash(blockHash);
     }
     /**
      * 根据区块Id查询区块数据
      * @param blockNumber 区块ID
      * @return
      */
-    public Map<String, String> queryBlockByNumber(long blockNumber){
-        try {
-            return this.channel.queryBlockByNumber(blockNumber);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    public Map<String, String> queryBlockByNumber(long blockNumber) throws InvalidArgumentException, IOException, ProposalException, TransactionException {
+        this.channel.initChannel();
+        return this.channel.queryBlockByNumber(blockNumber);
     }
     /**
      * 查询当前区块信息
      * @return
      */
-    public Map<String, String> queryCurrentBlockInfo(){
-        try {
-            return this.channel.queryCurrentBlockInfo();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return null;
+    public Map<String, String> queryCurrentBlockInfo() throws InvalidArgumentException, ProposalException, TransactionException {
+        this.channel.initChannel();
+        return this.channel.queryCurrentBlockInfo();
+    }
+    /**
+     * 创建通道
+     * @return
+     */
+    public Map<String, String> createChannel() throws TransactionException, IOException, InvalidArgumentException {
+        return this.channel.createChannel();
+    }
+    /**
+     * 节点加入通道
+     * @return
+     */
+    public Map<String, String> joinPeer() throws ProposalException, InvalidArgumentException, TransactionException {
+        this.channel.initChannel();
+        return this.channel.joinPeer(this.peers.get(0));
     }
 }

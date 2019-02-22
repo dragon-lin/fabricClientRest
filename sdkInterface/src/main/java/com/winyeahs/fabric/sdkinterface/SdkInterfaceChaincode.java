@@ -159,16 +159,16 @@ public class SdkInterfaceChaincode extends SdkInterfaceBase {
         /// Send transaction proposal to all peers
         UpgradeProposalRequest upgradeProposalRequest = org.getClient().newUpgradeProposalRequest();
         upgradeProposalRequest.setChaincodeID(this.chaincodeID);
-        upgradeProposalRequest.setProposalWaitTime(this.proposalWaitTime);
+        upgradeProposalRequest.setProposalWaitTime(proposalWaitTime);
         upgradeProposalRequest.setArgs(args);
 
         ChaincodeEndorsementPolicy chaincodeEndorsementPolicy = new ChaincodeEndorsementPolicy();
-        chaincodeEndorsementPolicy.fromYamlFile(new File(this.chaincodePolicy));
+        chaincodeEndorsementPolicy.fromYamlFile(new File(this.chaincodePolicy));//"code/src/policy/chaincodeendorsementpolicy.yaml"));
         upgradeProposalRequest.setChaincodeEndorsementPolicy(chaincodeEndorsementPolicy);
 
         Map<String, byte[]> tm2 = new HashMap<>();
-        tm2.put("HyperLedgerFabric", "UpgradeProposalRequest:JavaSDK".getBytes(UTF_8));
-        tm2.put("method", "UpgradeProposalRequest".getBytes(UTF_8));
+        tm2.put("HyperLedgerFabric", "InstantiateProposalRequest:JavaSDK".getBytes(UTF_8));
+        tm2.put("method", "InstantiateProposalRequest".getBytes(UTF_8));
         tm2.put("result", ":)".getBytes(UTF_8));
         upgradeProposalRequest.setTransientMap(tm2);
 

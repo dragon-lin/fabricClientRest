@@ -28,9 +28,11 @@ public class SdkInterfaceChannel extends SdkInterfaceBase {
     private String channelName;
     // 通道
     private Channel channel;
+    //客户端
+    private HFClient client;
 
-    public SdkInterfaceChannel(String channelName, SdkInterfaceOrg org){
-        this.channelName = channelName;
+    public SdkInterfaceChannel(SdkInterfaceOrg org){
+        //this.channelName = channelName;
         this.org = org;
     }
     public void setChannelName(String channelName) {
@@ -41,15 +43,26 @@ public class SdkInterfaceChannel extends SdkInterfaceBase {
         return this.channelName;
     }
 
+    /*
     public void setChannel(HFClient client) throws InvalidArgumentException, TransactionException {
         //设置通道配置
         this.setChannelCfg(client);
+    }
+    */
+    public void setChannel(Channel channel) {
+        this.channel = channel;
     }
 
     public Channel getChannel() {
         return this.channel;
     }
+    public void setHFClient(HFClient client) {
+        this.client = client;
+    }
 
+    public HFClient getHFClient() {
+        return this.client;
+    }
     /**
      * 设置通道配置
      */
@@ -117,11 +130,116 @@ public class SdkInterfaceChannel extends SdkInterfaceBase {
     }
 
     /**
+     * 初始化通道
+     * @throws InvalidArgumentException
+     */
+    public void initChannel() throws InvalidArgumentException, TransactionException {
+        if (this.channel == null){
+            this.client.setUserContext(this.org.getUser("Admin"));
+            this.channel = this.client.newChannel(this.channelName);
+            int OrderersCount = this.org.getOrderers().size();
+            for (int i = 0; i < OrderersCount; i++) {
+                Properties ordererProperties = new Properties();
+                if (this.org.getOpenTLS()) {
+                    File ordererCert = Paths.get(this.org.getCryptoConfigPath(), "/ordererOrganizations", this.org.getOrdererDomain(),
+                            "orderers", this.org.getOrderers().get(i).getOrdererName(), "tls/server.crt").toFile();
+                    if (!ordererCert.exists()) {
+                        throw new RuntimeException(
+                                String.format("Missing cert file for: %s. Could not find at location: %s", this.org.getOrderers().get(i).getOrdererName(), ordererCert.getAbsolutePath()));
+                    }
+                    ordererProperties.setProperty("pemFile", ordererCert.getAbsolutePath());
+                }
+                ordererProperties.setProperty("hostnameOverride", this.org.getOrderers().get(i).getOrdererName());
+                ordererProperties.setProperty("sslProvider", "openSSL");
+                ordererProperties.setProperty("negotiationType", "TLS");
+                ordererProperties.put("grpc.ManagedChannelBuilderOption.maxInboundMessageSize", 9000000);
+                // 设置keepAlive以避免在不活跃的http2连接上超时的例子。在5分钟内，需要对服务器端进行更改，以接受更快的ping速率。
+                ordererProperties.put("grpc.NettyChannelBuilderOption.keepAliveTime", new Object[]{5L, TimeUnit.MINUTES});
+                ordererProperties.put("grpc.NettyChannelBuilderOption.keepAliveTimeout", new Object[]{8L, TimeUnit.SECONDS});
+                ordererProperties.setProperty("ordererWaitTimeMilliSecs", "300000");
+                this.channel.addOrderer(
+                        client.newOrderer(this.org.getOrderers().get(i).getOrdererName(), this.org.getOrderers().get(i).getOrdererLocation(), ordererProperties));
+            }
+            int PeersCount = org.getPeers().size();
+            for (int i = 0; i < PeersCount; i++) {
+                Properties peerProperties = new Properties();
+                if (this.org.getOpenTLS()) {
+                    File peerCert = Paths.get(this.org.getCryptoConfigPath(), "/peerOrganizations", this.org.getOrgDomain(),
+                            "peers", org.getPeers().get(i).getPeerName(), "tls/server.crt").toFile();
+                    if (!peerCert.exists()) {
+                        throw new RuntimeException(String.format("Missing cert file for: %s. Could not find at location: %s", org.getPeers().get(i).getPeerName(), peerCert.getAbsolutePath()));
+                    }
+                    peerProperties.setProperty("pemFile", peerCert.getAbsolutePath());
+                }
+                peerProperties.setProperty("hostnameOverride", org.getPeers().get(i).getPeerName());
+                peerProperties.setProperty("sslProvider", "openSSL");
+                peerProperties.setProperty("negotiationType", "TLS");
+                peerProperties.put("grpc.ManagedChannelBuilderOption.maxInboundMessageSize", 9000000);
+                this.channel.addPeer(client.newPeer(this.org.getPeers().get(i).getPeerName(), this.org.getPeers().get(i).getPeerLocation(), peerProperties));
+                if (org.getPeers().get(i).getIsEventHub()) {
+                    this.channel.addEventHub(client.newEventHub(this.org.getPeers().get(i).getPeerEventHubName(), this.org.getPeers().get(i).getPeerEventHubLocation(), peerProperties));
+                }
+            }
+            if (!this.channel.isInitialized()) {
+                this.channel.initialize();
+            }
+        }
+    }
+    /**
+     * 创建通道
+     *
+     */
+    public Map<String, String> createChannel() throws InvalidArgumentException, IOException, TransactionException {
+        this.client.setUserContext(this.org.getUser("Admin"));
+        //初始化 ChannelConfiguration 对象.参数是通道初始化文件路径
+        ChannelConfiguration channelConfiguration = new ChannelConfiguration(new File("./channel-artifacts/"+this.channelName + ".tx"));
+        int OrderersCount = this.org.getOrderers().size();
+        for (int i = 0; i < OrderersCount; i++) {
+            Properties ordererProperties = new Properties();
+            if (this.org.getOpenTLS()) {
+                File ordererCert = Paths.get(this.org.getCryptoConfigPath(), "/ordererOrganizations", this.org.getOrdererDomain(),
+                        "orderers", this.org.getOrderers().get(i).getOrdererName(), "tls/server.crt").toFile();
+                if (!ordererCert.exists()) {
+                    throw new RuntimeException(
+                            String.format("Missing cert file for: %s. Could not find at location: %s", this.org.getOrderers().get(i).getOrdererName(), ordererCert.getAbsolutePath()));
+                }
+                ordererProperties.setProperty("pemFile", ordererCert.getAbsolutePath());
+            }
+            ordererProperties.setProperty("hostnameOverride", this.org.getOrderers().get(i).getOrdererName());
+            ordererProperties.setProperty("sslProvider", "openSSL");
+            ordererProperties.setProperty("negotiationType", "TLS");
+            ordererProperties.put("grpc.ManagedChannelBuilderOption.maxInboundMessageSize", 9000000);
+            // 设置keepAlive以避免在不活跃的http2连接上超时的例子。在5分钟内，需要对服务器端进行更改，以接受更快的ping速率。
+            ordererProperties.put("grpc.NettyChannelBuilderOption.keepAliveTime", new Object[]{5L, TimeUnit.MINUTES});
+            ordererProperties.put("grpc.NettyChannelBuilderOption.keepAliveTimeout", new Object[]{8L, TimeUnit.SECONDS});
+            ordererProperties.setProperty("ordererWaitTimeMilliSecs", "300000");
+            Orderer anOrderer = this.client.newOrderer(this.org.getOrderers().get(i).getOrdererName(), this.org.getOrderers().get(i).getOrdererLocation(), ordererProperties);
+            if (i == 0){
+                this.channel = this.client.newChannel(this.channelName, anOrderer, channelConfiguration, this.client.getChannelConfigurationSignature(channelConfiguration, this.org.getUser("Admin")));
+            }
+            this.channel.addOrderer(anOrderer);
+        }
+        if (!this.channel.isInitialized()) {
+            this.channel.initialize();
+        }
+        if (null != this.org.getEventListener()) {
+            this.channel.registerBlockListener(blockEvent -> {
+                try {
+                    this.org.getEventListener().received(this.execBlockInfo(blockEvent));
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    this.org.getEventListener().received(getFailFromString(e.getMessage()));
+                }
+            });
+        }
+        return getSuccessFromString("create channel success");
+    }
+    /**
      * Peer加入频道
      *
      * @param peer 中继节点信息
      */
-    Map<String, String> joinPeer(SdkInterfacePeer peer) throws InvalidArgumentException, ProposalException {
+    public Map<String, String> joinPeer(SdkInterfacePeer peer) throws InvalidArgumentException, ProposalException {
         File peerCert = Paths.get(org.getCryptoConfigPath(), "/peerOrganizations", org.getOrgDomain(), "peers", peer.getPeerName(), "tls/server.crt")
                 .toFile();
         if (!peerCert.exists()) {
