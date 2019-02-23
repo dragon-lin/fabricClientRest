@@ -1,4 +1,4 @@
--- 配置表 
+-- 配置表
 drop table if exists fabric_config;
 create table fabric_config(
    row_id int(10)  unsigned NOT NULL AUTO_INCREMENT,
