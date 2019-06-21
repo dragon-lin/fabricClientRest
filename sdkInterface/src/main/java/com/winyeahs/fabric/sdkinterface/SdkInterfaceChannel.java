@@ -58,83 +58,19 @@ public class SdkInterfaceChannel extends SdkInterfaceBase {
     }
     public void setHFClient(HFClient client) {
         this.client = client;
+        this.channel = null;
     }
 
     public HFClient getHFClient() {
         return this.client;
-    }
-    /**
-     * 设置通道配置
-     */
-    private void setChannelCfg(HFClient client) throws InvalidArgumentException, TransactionException {
-        client.setUserContext(this.org.getUser("Admin"));
-        this.channel = client.newChannel(this.channelName);
-        int OrderersCount = this.org.getOrderers().size();
-        for (int i = 0; i < OrderersCount; i++) {
-            Properties ordererProperties = new Properties();
-            if (this.org.getOpenTLS()) {
-                File ordererCert = Paths.get(this.org.getCryptoConfigPath(), "/ordererOrganizations", this.org.getOrdererDomain(),
-                                             "orderers", this.org.getOrderers().get(i).getOrdererName(), "tls/server.crt").toFile();
-                if (!ordererCert.exists()) {
-                    throw new RuntimeException(
-                            String.format("Missing cert file for: %s. Could not find at location: %s", this.org.getOrderers().get(i).getOrdererName(), ordererCert.getAbsolutePath()));
-                }
-                ordererProperties.setProperty("pemFile", ordererCert.getAbsolutePath());
-            }
-            ordererProperties.setProperty("hostnameOverride", this.org.getOrderers().get(i).getOrdererName());
-            ordererProperties.setProperty("sslProvider", "openSSL");
-            ordererProperties.setProperty("negotiationType", "TLS");
-            ordererProperties.put("grpc.ManagedChannelBuilderOption.maxInboundMessageSize", 9000000);
-            // 设置keepAlive以避免在不活跃的http2连接上超时的例子。在5分钟内，需要对服务器端进行更改，以接受更快的ping速率。
-            ordererProperties.put("grpc.NettyChannelBuilderOption.keepAliveTime", new Object[]{5L, TimeUnit.MINUTES});
-            ordererProperties.put("grpc.NettyChannelBuilderOption.keepAliveTimeout", new Object[]{8L, TimeUnit.SECONDS});
-            ordererProperties.setProperty("ordererWaitTimeMilliSecs", "300000");
-            this.channel.addOrderer(
-                    client.newOrderer(this.org.getOrderers().get(i).getOrdererName(), this.org.getOrderers().get(i).getOrdererLocation(), ordererProperties));
-        }
-
-        int PeersCount = org.getPeers().size();
-        for (int i = 0; i < PeersCount; i++) {
-            Properties peerProperties = new Properties();
-            if (this.org.getOpenTLS()) {
-                File peerCert = Paths.get(this.org.getCryptoConfigPath(), "/peerOrganizations", this.org.getOrgDomain(),
-                                          "peers", org.getPeers().get(i).getPeerName(), "tls/server.crt").toFile();
-                if (!peerCert.exists()) {
-                    throw new RuntimeException(String.format("Missing cert file for: %s. Could not find at location: %s", org.getPeers().get(i).getPeerName(), peerCert.getAbsolutePath()));
-                }
-                peerProperties.setProperty("pemFile", peerCert.getAbsolutePath());
-            }
-            peerProperties.setProperty("hostnameOverride", org.getPeers().get(i).getPeerName());
-            peerProperties.setProperty("sslProvider", "openSSL");
-            peerProperties.setProperty("negotiationType", "TLS");
-            peerProperties.put("grpc.ManagedChannelBuilderOption.maxInboundMessageSize", 9000000);
-            this.channel.addPeer(client.newPeer(this.org.getPeers().get(i).getPeerName(), this.org.getPeers().get(i).getPeerLocation(), peerProperties));
-            if (org.getPeers().get(i).getIsEventHub()) {
-                this.channel.addEventHub(client.newEventHub(this.org.getPeers().get(i).getPeerEventHubName(), this.org.getPeers().get(i).getPeerEventHubLocation(), peerProperties));
-            }
-        }
-
-        if (!this.channel.isInitialized()) {
-            this.channel.initialize();
-        }
-        if (null != this.org.getEventListener()) {
-            this.channel.registerBlockListener(blockEvent -> {
-                try {
-                    this.org.getEventListener().received(this.execBlockInfo(blockEvent));
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    this.org.getEventListener().received(getFailFromString(e.getMessage()));
-                }
-            });
-        }
     }
 
     /**
      * 初始化通道
      * @throws InvalidArgumentException
      */
-    public void initChannel() throws InvalidArgumentException, TransactionException {
-        if (this.channel == null){
+    public void initChannelEx() throws InvalidArgumentException, TransactionException {
+        if (this.channel == null) {
             this.client.setUserContext(this.org.getUser("Admin"));
             this.channel = this.client.newChannel(this.channelName);
             int OrderersCount = this.org.getOrderers().size();
@@ -183,6 +119,93 @@ public class SdkInterfaceChannel extends SdkInterfaceBase {
             if (!this.channel.isInitialized()) {
                 this.channel.initialize();
             }
+            if (null != this.org.getEventListener()) {
+                this.channel.registerBlockListener(blockEvent -> {
+                    try {
+                        this.org.getEventListener().received(this.execBlockInfo(blockEvent));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        this.org.getEventListener().received(getFailFromString(e.getMessage()));
+                    }
+                });
+            }
+        }
+    }
+
+    /**
+     * 初始化通道
+     * @throws InvalidArgumentException
+     */
+    public void initChannel(boolean isCreate) throws InvalidArgumentException, TransactionException, IOException {
+        if (this.channel == null) {
+            this.client.setUserContext(this.org.getUser("Admin"));
+            //初始化 ChannelConfiguration 对象.参数是通道初始化文件路径
+            ChannelConfiguration channelConfiguration = new ChannelConfiguration(new File("./channel-artifacts/"+this.channelName + ".tx"));
+            if (!isCreate) {
+                this.channel = this.client.newChannel(this.channelName);
+                int PeersCount = org.getPeers().size();
+                for (int i = 0; i < PeersCount; i++) {
+                    Properties peerProperties = new Properties();
+                    if (this.org.getOpenTLS()) {
+                        File peerCert = Paths.get(this.org.getCryptoConfigPath(), "/peerOrganizations", this.org.getOrgDomain(),
+                                "peers", org.getPeers().get(i).getPeerName(), "tls/server.crt").toFile();
+                        if (!peerCert.exists()) {
+                            throw new RuntimeException(String.format("Missing cert file for: %s. Could not find at location: %s", org.getPeers().get(i).getPeerName(), peerCert.getAbsolutePath()));
+                        }
+                        peerProperties.setProperty("pemFile", peerCert.getAbsolutePath());
+                    }
+                    peerProperties.setProperty("hostnameOverride", org.getPeers().get(i).getPeerName());
+                    peerProperties.setProperty("sslProvider", "openSSL");
+                    peerProperties.setProperty("negotiationType", "TLS");
+                    peerProperties.put("grpc.ManagedChannelBuilderOption.maxInboundMessageSize", 9000000);
+                    this.channel.addPeer(client.newPeer(this.org.getPeers().get(i).getPeerName(), this.org.getPeers().get(i).getPeerLocation(), peerProperties));
+                    if (org.getPeers().get(i).getIsEventHub()) {
+                        this.channel.addEventHub(client.newEventHub(this.org.getPeers().get(i).getPeerEventHubName(), this.org.getPeers().get(i).getPeerEventHubLocation(), peerProperties));
+                    }
+                }
+            }
+
+            int OrderersCount = this.org.getOrderers().size();
+            for (int i = 0; i < OrderersCount; i++) {
+                Properties ordererProperties = new Properties();
+                if (this.org.getOpenTLS()) {
+                    File ordererCert = Paths.get(this.org.getCryptoConfigPath(), "/ordererOrganizations", this.org.getOrdererDomain(),
+                            "orderers", this.org.getOrderers().get(i).getOrdererName(), "tls/server.crt").toFile();
+                    if (!ordererCert.exists()) {
+                        throw new RuntimeException(
+                                String.format("Missing cert file for: %s. Could not find at location: %s", this.org.getOrderers().get(i).getOrdererName(), ordererCert.getAbsolutePath()));
+                    }
+                    ordererProperties.setProperty("pemFile", ordererCert.getAbsolutePath());
+                }
+                ordererProperties.setProperty("hostnameOverride", this.org.getOrderers().get(i).getOrdererName());
+                ordererProperties.setProperty("sslProvider", "openSSL");
+                ordererProperties.setProperty("negotiationType", "TLS");
+                ordererProperties.put("grpc.ManagedChannelBuilderOption.maxInboundMessageSize", 9000000);
+                // 设置keepAlive以避免在不活跃的http2连接上超时的例子。在5分钟内，需要对服务器端进行更改，以接受更快的ping速率。
+                ordererProperties.put("grpc.NettyChannelBuilderOption.keepAliveTime", new Object[]{5L, TimeUnit.MINUTES});
+                ordererProperties.put("grpc.NettyChannelBuilderOption.keepAliveTimeout", new Object[]{8L, TimeUnit.SECONDS});
+                ordererProperties.setProperty("ordererWaitTimeMilliSecs", "300000");
+                Orderer anOrderer = this.client.newOrderer(this.org.getOrderers().get(i).getOrdererName(), this.org.getOrderers().get(i).getOrdererLocation(), ordererProperties);
+                if (isCreate && i == 0){
+                    this.channel = this.client.newChannel(this.channelName, anOrderer, channelConfiguration, this.client.getChannelConfigurationSignature(channelConfiguration, this.org.getUser("Admin")));
+                }
+                this.channel.addOrderer(anOrderer);
+                //this.channel.addOrderer(
+                //        client.newOrderer(this.org.getOrderers().get(i).getOrdererName(), this.org.getOrderers().get(i).getOrdererLocation(), ordererProperties));
+            }
+            if (!this.channel.isInitialized()) {
+                this.channel.initialize();
+            }
+            if (null != this.org.getEventListener()) {
+                this.channel.registerBlockListener(blockEvent -> {
+                    try {
+                        this.org.getEventListener().received(this.execBlockInfo(blockEvent));
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        this.org.getEventListener().received(getFailFromString(e.getMessage()));
+                    }
+                });
+            }
         }
     }
     /**
@@ -190,6 +213,7 @@ public class SdkInterfaceChannel extends SdkInterfaceBase {
      *
      */
     public Map<String, String> createChannel() throws InvalidArgumentException, IOException, TransactionException {
+        /*
         this.client.setUserContext(this.org.getUser("Admin"));
         //初始化 ChannelConfiguration 对象.参数是通道初始化文件路径
         ChannelConfiguration channelConfiguration = new ChannelConfiguration(new File("./channel-artifacts/"+this.channelName + ".tx"));
@@ -232,6 +256,8 @@ public class SdkInterfaceChannel extends SdkInterfaceBase {
                 }
             });
         }
+        */
+        this.initChannel(true);
         return getSuccessFromString("create channel success");
     }
     /**
@@ -253,14 +279,16 @@ public class SdkInterfaceChannel extends SdkInterfaceBase {
         // 在grpc的NettyChannelBuilder上设置特定选项
         peerProperties.put("grpc.ManagedChannelBuilderOption.maxInboundMessageSize", 9000000);
         Peer fabricPeer = org.getClient().newPeer(peer.getPeerName(), peer.getPeerLocation(), peerProperties);
-        for (Peer peerNow : channel.getPeers()) {
+        /*
+        for (Peer peerNow : this.channel.getPeers()) {
             if (peerNow.getUrl().equals(fabricPeer.getUrl())) {
                 return getFailFromString("peer has already in channel");
             }
         }
-        channel.joinPeer(fabricPeer);
+        */
+        this.channel.joinPeer(fabricPeer);
         if (peer.getIsEventHub()) {
-            channel.addEventHub(org.getClient().newEventHub(peer.getPeerEventHubName(), peer.getPeerEventHubLocation(), peerProperties));
+            this.channel.addEventHub(org.getClient().newEventHub(peer.getPeerEventHubName(), peer.getPeerEventHubLocation(), peerProperties));
         }
         return getSuccessFromString("peer join channel success");
     }

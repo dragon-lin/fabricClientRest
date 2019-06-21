@@ -1,6 +1,7 @@
 package com.winyeahs.fabric.sdkinterface;
 
 import com.winyeahs.fabric.sdkinterface.base.SdkInterfaceBase;
+import org.apache.log4j.Logger;
 import org.hyperledger.fabric.sdk.*;
 import org.hyperledger.fabric.sdk.exception.ChaincodeEndorsementPolicyParseException;
 import org.hyperledger.fabric.sdk.exception.InvalidArgumentException;
@@ -20,6 +21,8 @@ import java.util.concurrent.TimeoutException;
  * Created by linwf on 2018/10/28.
  */
 public class SdkInterfaceChaincode extends SdkInterfaceBase {
+    private static Logger log = Logger.getLogger(SdkInterfaceChaincode.class);
+
     // 智能合约名称
     private String chaincodeName; // mycc
     // 智能合约的go环境路径
@@ -90,7 +93,7 @@ public class SdkInterfaceChaincode extends SdkInterfaceBase {
     }
 
     public void setTransactionWaitTime(int transactionWaitTime) {
-        this.transactionWaitTime = proposalWaitTime;
+        this.transactionWaitTime = transactionWaitTime;
     }
 
     public int getTransactionWaitTime() {
@@ -236,22 +239,35 @@ public class SdkInterfaceChaincode extends SdkInterfaceBase {
 
         Collection<Set<ProposalResponse>> proposalConsistencySets = SDKUtils.getProposalConsistencySets(proposalResponses);
         if (proposalConsistencySets.size() != 1) {
-
+            log.error("Expected only one set of consistent proposal responses but got " + proposalConsistencySets.size());
         }
         if (failed.size() > 0) {
             ProposalResponse firstTransactionProposalResponse = failed.iterator().next();
+            log.error("Not enough endorsers for inspect:" + failed.size() + " endorser error: " + firstTransactionProposalResponse.getMessage() + ". Was verified: "
+                    + firstTransactionProposalResponse.isVerified());
+
             resultMap.put("code", "error");
             resultMap.put("data", firstTransactionProposalResponse.getMessage());
             return resultMap;
         } else {
+            log.info("Successfully received transaction proposal responses.");
             ProposalResponse resp = proposalResponses.iterator().next();
+            log.debug("TransactionID: " + resp.getTransactionID());
             byte[] x = resp.getChaincodeActionResponsePayload();
             String resultAsString = null;
             if (x != null) {
                 resultAsString = new String(x, "UTF-8");
             }
-            org.getChannel().getChannel().sendTransaction(successful).get(transactionWaitTime, TimeUnit.SECONDS);
-            resultMap.put("code", "success");
+            BlockEvent.TransactionEvent transactionEvent = org.getChannel().getChannel().sendTransaction(successful).get(transactionWaitTime, TimeUnit.SECONDS);
+            //} catch (Exception e) {
+            //    log.debug(e.getMessage());
+            //     e.printStackTrace();
+            // }
+            if (transactionEvent.isValid()) {
+                log.info("Finished transaction with transaction id = " + transactionEvent.getTransactionID());
+            } else {
+                log.error("can't commit result");
+            }            resultMap.put("code", "success");
             resultMap.put("data", resultAsString);
             resultMap.put("txid", resp.getTransactionID());
             return resultMap;

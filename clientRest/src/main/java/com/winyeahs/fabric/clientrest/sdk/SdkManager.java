@@ -5,8 +5,8 @@ import com.winyeahs.fabric.clientrest.model.FabricConfigModel;
 import com.winyeahs.fabric.clientrest.model.FabricConfigOrdererModel;
 import com.winyeahs.fabric.clientrest.model.FabricConfigPeerModel;
 import com.winyeahs.fabric.sdkinterface.SdkInterfaceOrg;
+import org.apache.log4j.Logger;
 import org.hyperledger.fabric.sdk.exception.*;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
@@ -20,15 +20,22 @@ import java.util.concurrent.TimeoutException;
  * Created by linwf on 2018/10/28.
  */
 public class SdkManager {
+    private static Logger log = Logger.getLogger(SdkManager.class);
 
-    private SdkInterfaceOrg sdkInterfaceOrg;
-    private FabricConfigMapper fabricConfigMapper;
+    private final SdkInterfaceOrg sdkInterfaceOrg;
+    private final FabricConfigMapper fabricConfigMapper;
 
     private static SdkManager instance;
     public static synchronized SdkManager getInstance(FabricConfigMapper fabricConfigMapper) {
         if (null == instance) {
             instance = new SdkManager(fabricConfigMapper);
         }
+        /*
+        try {
+            instance.sdkInterfaceOrg.initClient();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }*/
         return instance;
     }
     private SdkManager(FabricConfigMapper fabricConfigMapper) {
@@ -67,53 +74,16 @@ public class SdkManager {
             this.sdkInterfaceOrg.setOpenCATLS(configData.getIs_catls());
             try {
                 if (!this.sdkInterfaceOrg.inited()) {
+                    this.sdkInterfaceOrg.setEventListener(map -> {
+                        log.debug(map.get("code"));
+                        log.debug(map.get("data"));
+                    });
                     this.sdkInterfaceOrg.init();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
-        /*
-        //从数据库中读取配置 TODO
-        this.sdkInterfaceOrg.setOrgName("Org1");
-        this.sdkInterfaceOrg.setUsername("Admin");
-        //this.sdkInterfaceOrg.setCryptoConfigPath("C:\\linwf\\开发\\java开发\\fabricClientRest\\clientRest\\src\\main\\resources\\fabric\\kafkapeer\\crypto-config");
-        //this.sdkInterfaceOrg.setChannelArtifactsPath("C:\\linwf\\开发\\java开发\\fabricClientRest\\clientRest\\src\\main\\resources\\fabric\\kafkapeer\\channel-artifacts");
-        this.sdkInterfaceOrg.setCryptoConfigPath("crypto-config");
-        this.sdkInterfaceOrg.setChannelArtifactsPath("channel-artifacts");
-        this.sdkInterfaceOrg.setOrgMSPID("Org1MSP");
-        this.sdkInterfaceOrg.setOrgDomain("org1.example.com");
-        this.sdkInterfaceOrg.addPeer("peer0.org1.example.com", "peer0.org1.example.com", "grpc://192.168.235.7:7051", "grpc://192.168.235.7:7053", true);
-        this.sdkInterfaceOrg.setOrdererDomain("example.com");
-        this.sdkInterfaceOrg.addOrderer("orderer0.example.com", "grpc://192.168.235.3:7050");
-        this.sdkInterfaceOrg.addOrderer("orderer1.example.com", "grpc://192.168.235.4:7050");
-        this.sdkInterfaceOrg.addOrderer("orderer2.example.com", "grpc://192.168.235.5:7050");
-        this.sdkInterfaceOrg.setChannel("mychannel");
-        this.sdkInterfaceOrg.setChaincode("mycc", "/opt/gopath", "github.com/hyperledger/fabric/kafkapeer/chaincode/go/example02", "chaincodeendorsementpolicy.yaml", "1.0", 90000, 120);
-        this.sdkInterfaceOrg.setOpenTLS(true);
-        this.sdkInterfaceOrg.setOpenCATLS(false);
-        try {
-            this.sdkInterfaceOrg.init();
-        } catch (InvalidArgumentException e) {
-            e.printStackTrace();
-        } catch (TransactionException e) {
-            e.printStackTrace();
-        } catch (InstantiationException e) {
-            e.printStackTrace();
-        } catch (InvocationTargetException e) {
-            e.printStackTrace();
-        } catch (NoSuchMethodException e) {
-            e.printStackTrace();
-        } catch (IllegalAccessException e) {
-            e.printStackTrace();
-        } catch (CryptoException e) {
-            e.printStackTrace();
-        } catch (ClassNotFoundException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        */
     }
 
     public String DemoMethod() {
@@ -124,7 +94,7 @@ public class SdkManager {
      * 安装智能合约
      * @return
      */
-    public Map<String, String> chainCodeInstall() throws InvalidArgumentException, ProposalException, TransactionException {
+    public Map<String, String> chainCodeInstall() throws InvalidArgumentException, ProposalException, TransactionException, IOException {
         return this.sdkInterfaceOrg.chainCodeInstall();
     }
     /**
@@ -148,7 +118,7 @@ public class SdkManager {
      * @param args 查询参数数组
      * @return
      */
-    public Map<String, String> chainCodeInvoke(String fcn, String[] args) throws ProposalException, InvalidArgumentException, InterruptedException, ExecutionException, TimeoutException, UnsupportedEncodingException, TransactionException {
+    public Map<String, String> chainCodeInvoke(String fcn, String[] args) throws ProposalException, InvalidArgumentException, InterruptedException, ExecutionException, TimeoutException, IOException, TransactionException, IllegalAccessException, InvocationTargetException, InstantiationException, CryptoException, NoSuchMethodException, ClassNotFoundException {
         return this.sdkInterfaceOrg.chainCodeInvoke(fcn, args);
     }
     /**
@@ -156,7 +126,7 @@ public class SdkManager {
      * @param args 查询参数数组
      * @return
      */
-    public Map<String, String> chainCodeQuery(String fcn, String[] args) throws ProposalException, InvalidArgumentException, TransactionException {
+    public Map<String, String> chainCodeQuery(String fcn, String[] args) throws ProposalException, InvalidArgumentException, TransactionException, IOException {
         return this.sdkInterfaceOrg.chainCodeQuery(fcn, args);
     }
 
@@ -188,7 +158,7 @@ public class SdkManager {
      * 查询区块数据
      * @return
      */
-    public Map<String, String> queryCurrentBlockInfo() throws ProposalException, InvalidArgumentException, TransactionException {
+    public Map<String, String> queryCurrentBlockInfo() throws ProposalException, InvalidArgumentException, TransactionException, IOException {
         return this.sdkInterfaceOrg.queryCurrentBlockInfo();
     }
 
@@ -204,7 +174,7 @@ public class SdkManager {
      * 节点加入通道
      * @return
      */
-    public Map<String, String> joinPeer() throws ProposalException, InvalidArgumentException, TransactionException {
+    public Map<String, String> joinPeer() throws ProposalException, InvalidArgumentException, TransactionException, IOException {
         return this.sdkInterfaceOrg.joinPeer();
     }
 }

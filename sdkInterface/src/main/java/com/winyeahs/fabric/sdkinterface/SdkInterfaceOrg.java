@@ -3,25 +3,19 @@ package com.winyeahs.fabric.sdkinterface;
 import com.alibaba.fastjson.JSONObject;
 import com.winyeahs.fabric.sdkinterface.base.SdkInterfaceBase;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.logging.Log;
-import org.apache.commons.logging.LogFactory;
+import org.apache.log4j.Logger;
 import org.hyperledger.fabric.sdk.*;
 import org.hyperledger.fabric.sdk.exception.*;
 import org.hyperledger.fabric.sdk.security.CryptoSuite;
 import org.hyperledger.fabric_ca.sdk.HFCAClient;
 
-import javax.swing.text.StyledEditorKit;
 import java.io.*;
 import java.lang.reflect.InvocationTargetException;
 import java.nio.file.Paths;
 import java.security.PrivateKey;
 import java.util.*;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
-
-import static java.nio.charset.StandardCharsets.UTF_8;
-import static jdk.nashorn.internal.runtime.regexp.joni.Config.log;
 
 
 /**
@@ -36,7 +30,7 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
     // 事务等待时间以秒为单位
     private int transactionWaitTime = 120;
 
-    private static final Log log = LogFactory.getLog(SdkInterfaceOrg.class);
+    private static Logger log = Logger.getLogger(SdkInterfaceOrg.class);
 
     private boolean isInit = false;
     // 用户名
@@ -298,8 +292,16 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
         this.client = HFClient.createNewInstance();
         this.client.setCryptoSuite(CryptoSuite.Factory.getCryptoSuite());
         this.channel.setHFClient(this.client);
+
         this.isInit = true;
     }
+
+    public void initClient() throws IllegalAccessException, InvocationTargetException, InvalidArgumentException, InstantiationException, NoSuchMethodException, CryptoException, ClassNotFoundException {
+        this.client = HFClient.createNewInstance();
+        this.client.setCryptoSuite(CryptoSuite.Factory.getCryptoSuite());
+        this.channel.setHFClient(this.client);
+    }
+
     public boolean inited(){
         return this.isInit;
     }
@@ -335,8 +337,8 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
      * 初始化智能合约
      * @return
      */
-    public Map<String, String> chainCodeInstall() throws ProposalException, InvalidArgumentException, TransactionException {
-        this.channel.initChannel();
+    public Map<String, String> chainCodeInstall() throws ProposalException, InvalidArgumentException, TransactionException, IOException {
+        this.channel.initChannel(false);
         return this.chaincode.chainCodeInstall(this);
     }
     /**
@@ -345,7 +347,7 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
      * @return
      */
     public Map<String, String> chainCodeInstantiate(String[] args) throws InterruptedException, InvalidArgumentException, ExecutionException, ChaincodeEndorsementPolicyParseException, TimeoutException, ProposalException, IOException, TransactionException {
-        this.channel.initChannel();
+        this.channel.initChannel(false);
         return this.chaincode.chainCodeInstantiate(this, args);
     }
     /**
@@ -354,7 +356,7 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
      * @return
      */
     public Map<String, String> chainCodeUpgrade(String[] args) throws InterruptedException, InvalidArgumentException, ExecutionException, ChaincodeEndorsementPolicyParseException, TimeoutException, ProposalException, IOException, TransactionException {
-        this.channel.initChannel();
+        this.channel.initChannel(false);
         return this.chaincode.chainCodeUpgrade(this, args);
     }
     /**
@@ -362,8 +364,9 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
      * @param args 查询参数数组
      * @return
      */
-    public Map<String, String> chainCodeInvoke(String fcn, String[] args) throws InterruptedException, InvalidArgumentException, UnsupportedEncodingException, ExecutionException, TimeoutException, ProposalException, TransactionException {
-        this.channel.initChannel();
+    public Map<String, String> chainCodeInvoke(String fcn, String[] args) throws InterruptedException, InvalidArgumentException, IOException, ExecutionException, TimeoutException, ProposalException, TransactionException, IllegalAccessException, InstantiationException, ClassNotFoundException, NoSuchMethodException, InvocationTargetException, CryptoException {
+        this.initClient();
+        this.channel.initChannel(false);
         return this.chaincode.chainCodeInvoke(this, fcn, args);
     }
 
@@ -372,8 +375,8 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
      * @param args 查询参数数组
      * @return
      */
-    public Map<String, String> chainCodeQuery(String fcn, String[] args) throws ProposalException, InvalidArgumentException, TransactionException {
-        this.channel.initChannel();
+    public Map<String, String> chainCodeQuery(String fcn, String[] args) throws ProposalException, InvalidArgumentException, TransactionException, IOException {
+        this.channel.initChannel(false);
         return this.chaincode.chainCodeQuery(this, fcn, args);
     }
 
@@ -383,7 +386,7 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
      * @return
      */
     public Map<String, String> queryBlockByTransactionID(String txID) throws ProposalException, IOException, InvalidArgumentException, TransactionException {
-        this.channel.initChannel();
+        this.channel.initChannel(false);
         return this.channel.queryBlockByTransactionID(txID);
     }
     /**
@@ -392,7 +395,7 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
      * @return
      */
     public Map<String, String> queryBlockByHash(byte[] blockHash) throws ProposalException, IOException, InvalidArgumentException, TransactionException {
-        this.channel.initChannel();
+        this.channel.initChannel(false);
         return this.channel.queryBlockByHash(blockHash);
     }
     /**
@@ -401,15 +404,15 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
      * @return
      */
     public Map<String, String> queryBlockByNumber(long blockNumber) throws InvalidArgumentException, IOException, ProposalException, TransactionException {
-        this.channel.initChannel();
+        this.channel.initChannel(false);
         return this.channel.queryBlockByNumber(blockNumber);
     }
     /**
      * 查询当前区块信息
      * @return
      */
-    public Map<String, String> queryCurrentBlockInfo() throws InvalidArgumentException, ProposalException, TransactionException {
-        this.channel.initChannel();
+    public Map<String, String> queryCurrentBlockInfo() throws InvalidArgumentException, ProposalException, TransactionException, IOException {
+        this.channel.initChannel(false);
         return this.channel.queryCurrentBlockInfo();
     }
     /**
@@ -423,8 +426,8 @@ public class SdkInterfaceOrg extends SdkInterfaceBase {
      * 节点加入通道
      * @return
      */
-    public Map<String, String> joinPeer() throws ProposalException, InvalidArgumentException, TransactionException {
-        this.channel.initChannel();
+    public Map<String, String> joinPeer() throws ProposalException, InvalidArgumentException, TransactionException, IOException {
+        this.channel.initChannel(false);
         return this.channel.joinPeer(this.peers.get(0));
     }
 }
